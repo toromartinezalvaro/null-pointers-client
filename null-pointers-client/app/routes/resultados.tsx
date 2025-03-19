@@ -1,7 +1,7 @@
-import styles from "~/styles/resultados.css";
+import styles from "../styles/resultados.css";
 import { Form, useLoaderData, useNavigate } from "@remix-run/react";
 import { json } from "@remix-run/node";
-import { destinoService } from "~/services/destinoService";
+import { destinoService } from "../services/destinoService";
 
 export const links = () => {
   return [{ rel: "stylesheet", href: styles },

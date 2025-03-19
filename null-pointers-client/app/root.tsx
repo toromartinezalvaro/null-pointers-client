@@ -8,8 +8,10 @@ import {
   ScrollRestoration,
 } from "@remix-run/react";
 
+
 import appStylesHref from "./app.css?url";
 import { DestinoProvider } from "./context/destinoService";
+import MenuNavegacion from "./routes/menu-navegacion";
 
 export const links: LinksFunction = () => [
   { rel: "stylesheet", href: appStylesHref },
@@ -63,6 +65,9 @@ export default function App() {
             </ul>
           </nav> */}
         {/* </div> */}
+        <header>
+          <MenuNavegacion/> {/* Encabezado común */}
+        </header>
         <div id="detail">
           <Outlet />
         </div>

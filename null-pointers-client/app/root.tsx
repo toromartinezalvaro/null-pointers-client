@@ -1,6 +1,6 @@
 import type { LinksFunction } from "@remix-run/node";
 import {
-  
+  // Form,
   Links,
   Meta,
   Outlet,
@@ -35,8 +35,8 @@ export default function App() {
       </head>
       <body>
         <DestinoProvider>
-        {/* <div id="sidebar"> */}
-          {/* <h1>Remix Contacts</h1>
+        {/* <div id="sidebar">
+          <h1>Remix Contacts</h1>
           <div>
             <Form id="search-form" role="search">
               <input
@@ -61,8 +61,8 @@ export default function App() {
                 <a href={`/contacts/2`}>Your Friend</a>
               </li>
             </ul>
-          </nav> */}
-        {/* </div> */}
+          </nav>
+        </div> */}
         <div id="detail">
           <Outlet />
         </div>

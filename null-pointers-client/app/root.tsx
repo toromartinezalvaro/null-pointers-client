@@ -34,6 +34,7 @@ export default function App() {
         <Links />
       </head>
       <body>
+        <DestinoProvider>
         {/* <div id="sidebar">
           <h1>Remix Contacts</h1>
           <div>

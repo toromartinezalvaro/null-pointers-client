@@ -32,7 +32,7 @@ export default function Login() {
     try {
       const user = await authenticate(data.email, data.password);
       if (user) {
-        navigate("/index"); // Enrutar
+        navigate("/tarjetas"); // Enrutar
       } else {
         alert("Credenciales incorrectas.");
       }

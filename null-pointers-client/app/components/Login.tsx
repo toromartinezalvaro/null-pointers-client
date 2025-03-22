@@ -1,34 +1,38 @@
-import React, { useState } from "react";
+import React from "react";
 import { useNavigate } from "@remix-run/react";
 import { validateForm } from "~/utils/validations";
 import { authenticate } from "~/services/auth";
+import { useCheckbox } from "~/hooks/useCheckbox"; // Importa el hook
+import { LoginFormValues } from "~/interfaces/loginForm"; // Importa la interfaz
 import "~/styles/login.css";
 
 export default function Login() {
-  const [aceptado, setAceptado] = useState(false);
+  const { checked: aceptado, handleChange: manejarCambio } = useCheckbox(false); // Usa el hook
   const navigate = useNavigate();
-
-  const manejarCambio = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setAceptado(event.target.checked);
-  };
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
     const formData = new FormData(event.currentTarget);
-    const email = formData.get("email") as string;
-    const password = formData.get("password") as string;
 
-    const error = validateForm(email, password, aceptado);
+    // Tipamos los datos del formulario con la interfaz LoginFormValues
+    const data: LoginFormValues = {
+      email: formData.get("email") as string,
+      password: formData.get("password") as string,
+      aceptado, // Usamos el valor del hook useCheckbox
+    };
+
+    // Validación
+    const error = validateForm(data.email, data.password, data.aceptado);
     if (error) {
       alert(error);
       return;
     }
 
     try {
-      const user = await authenticate(email, password);
+      const user = await authenticate(data.email, data.password);
       if (user) {
-        navigate("/index"); /*Enrutar*/
+        navigate("/index"); // Enrutar
       } else {
         alert("Credenciales incorrectas.");
       }

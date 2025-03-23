@@ -3,7 +3,7 @@ import { UserRecord } from "../interfaces/UserRecord"; // Interfaz para tipado d
 
 export const registerUser = async (user: UserRecord) => {
   try {
-    const response = await fetch(`${API_URL}`, {
+    const response = await fetch(`${API_URL}`, { 
       method: "POST",
       headers: {
         "Content-Type": "application/json",

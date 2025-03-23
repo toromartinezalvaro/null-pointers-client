@@ -1,6 +1,5 @@
 import type { LinksFunction } from "@remix-run/node";
 import {
-  // Form,
   Links,
   Meta,
   Outlet,
@@ -8,23 +7,25 @@ import {
   ScrollRestoration,
 } from "@remix-run/react";
 
-
 import appStylesHref from "./app.css?url";
 import { DestinoProvider } from "./context/destinoService";
 import MenuNavegacion from "./routes/menu-navegacion";
 
 export const links: LinksFunction = () => [
   { rel: "stylesheet", href: appStylesHref },
-  { rel: "stylesheet", href: "https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" }, // Fuente Roboto
-  { rel: "stylesheet", href: "/styles/extra.css" } // Archivo de estilos adicional
-  ,{
-    rel: "preconnect", href: "https://fonts.googleapis.com"
-},
-{
-    href: "https://fonts.googleapis.com/css2?family=Inconsolata:wght@200..900&family=Montserrat:ital,wght@0,100..900;1,100..900&family=PT+Sans:ital,wght@0,400;0,700;1,400;1,700&display=swap", rel: "stylesheet"}
+  {
+    rel: "stylesheet",
+    href: "https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap",
+  },
+  {
+    rel: "preconnect",
+    href: "https://fonts.googleapis.com",
+  },
+  {
+    href: "https://fonts.googleapis.com/css2?family=Inconsolata:wght@200..900&family=Montserrat:ital,wght@0,100..900;1,100..900&family=PT+Sans:ital,wght@0,400;0,700;1,400;1,700&display=swap",
+    rel: "stylesheet",
+  },
 ];
-
-
 
 export default function App() {
   return (
@@ -37,16 +38,12 @@ export default function App() {
       </head>
       <body>
         <DestinoProvider>
-        
-        <header>
-          <MenuNavegacion/> {/* Encabezado común */}
-        </header>
-        <div id="detail">
-          <Outlet />
-        </div>
-
-        <ScrollRestoration />
-        <Scripts />
+          <MenuNavegacion />
+          <div id="detail">
+            <Outlet />
+          </div>
+          <ScrollRestoration />
+          <Scripts />
         </DestinoProvider>
       </body>
     </html>

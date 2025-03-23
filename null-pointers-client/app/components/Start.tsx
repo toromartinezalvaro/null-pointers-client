@@ -12,7 +12,7 @@ export default function Start({ imageSrc }: StartProps) {
     </Link>
    {/* Contenido de texto (Información) */}
    <div id="texto" className="nosotros">
-        <h1>Información</h1>
+        <h1 id="h1">Información</h1>
         <p>
           ¿Estás cansado de pasar horas buscando el destino perfecto para tu próximo viaje?
           ¿Te gustaría crear un viaje de acuerdo a tus preferencias y sin complicaciones? <br /> <br />

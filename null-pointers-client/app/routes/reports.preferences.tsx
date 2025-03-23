@@ -1,14 +1,10 @@
 import { useLoaderData } from "@remix-run/react";
-import styles from "~/styles/preferences.css";
+import "~/styles/preferences.css";
 import { preferencesLoader } from "../loaders/preferencesLoader";
 import { Preferencia } from "../interfaces/preference";
 import PreferencesTable from "../components/PreferencesTable";
 
 export const loader = preferencesLoader;
-
-export function links() {
-  return [{ rel: "stylesheet", href: styles }];
-}
 
 export default function Preferences() {
   const preferenciasData = useLoaderData<Preferencia[]>();

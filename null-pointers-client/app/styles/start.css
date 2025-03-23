@@ -1,0 +1,60 @@
+body, html {
+       margin: 0;
+       padding: 0;
+     }
+     
+     /* Contenedor principal */
+     #container {
+       width: 100vw;
+       height: 70vh;
+       display: flex;
+       gap: 20px;
+       margin-top: 40px;
+       background: #000835; /* Fondo oscuro */
+     }
+     
+     /* Imagen de inicio */
+     #imagenInicio {
+       width: 100%;
+       height: 60%;
+       margin-top: 3rem;
+       margin-left: 0;
+       border-radius: 1%; /* Bordes redondeados */
+       position: absolute;
+       z-index: 1;
+       opacity: 0.50; /* Opacidad inicial */
+     }
+     
+     #imagenInicio:hover {
+       opacity: 1; /* Opacidad completa al pasar el ratón */
+       
+     }
+     
+     /* Texto informativo */
+     #texto {
+       background: #000835;
+       color: white;
+       margin-top: 12rem;
+       margin-left: 40rem;
+       width: 600px;
+       height: 40%;
+       text-align: center;
+       font-family: "Roboto", sans-serif;
+       border-radius: 5px;
+       opacity: 0; /* Oculto inicialmente */
+       animation: subirFlotando 2s ease-out forwards; /* Animación de aparición */
+       position: absolute; 
+       z-index: 2; 
+     }
+     
+     @keyframes subirFlotando {
+       0% {
+         transform: translateY(50px); /* Empieza más abajo */
+         opacity: 0; /* Invisible al comienzo */
+       }
+       100% {
+         transform: translateY(0); /* En posición original */
+         opacity: 1; /* Totalmente visible */
+       }
+     }
+     

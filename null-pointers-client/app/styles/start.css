@@ -12,6 +12,14 @@ body, html {
        margin-top: 40px;
        background: #000835; /* Fondo oscuro */
      }
+
+  #h1{
+      font-size: 2rem; /* Ajusta el tamaño de la fuente (grande) */
+      font-weight: bold; /* Hace el texto en negrita */
+      font-family: Arial, sans-serif; /* Define la fuente (opcional) */
+      color: white; /* Color negro (puedes cambiarlo) */
+      text-align: center;
+    }
      
      /* Imagen de inicio */
      #imagenInicio {

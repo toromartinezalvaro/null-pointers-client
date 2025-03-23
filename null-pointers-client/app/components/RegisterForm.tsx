@@ -71,16 +71,37 @@ const RegisterForm: React.FC = () => {
           required
         />
         <label id="terms">
-          <input
+          <input 
             type="checkbox"
+         
             onChange={handleCheckboxChange}
             checked={isCheckboxChecked}
           />
-          Acepto los términos y condiciones
-        </label>
+        {" "}
+            Acepto los{" "}
+            <a
+              id="terms"
+              href="https://amadeus.com/es/politicas/privacy-policy"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <strong>términos y condiciones</strong>
+            </a>{" "}
+            de la política de protección de datos.
+          </label>
         <button id="button" type="submit" disabled={!isCheckboxChecked}>
           Registrarse
         </button>
+        <a
+              id="terms"
+              href="/login"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <strong>Ya estoy Resgistrado</strong>
+         </a>
+
+
       </form>
       {successMessage && (
         <div id="mensaje-exito">

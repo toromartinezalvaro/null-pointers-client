@@ -1,7 +1,4 @@
-import styles from '../styles/menu-navegacion.css';
-
-
-export const links = () => [{ rel: 'stylesheet', href: styles }];
+import "~/styles/menu-navegacion.css";
 
 export default function MenuNavegacion() {
   return (
@@ -23,7 +20,7 @@ export default function MenuNavegacion() {
               </a>
             </li>
             <li>
-              <a href="../reports" target="_blank">
+              <a href="/reports/preferences">
                 Reporte
               </a>
             </li>

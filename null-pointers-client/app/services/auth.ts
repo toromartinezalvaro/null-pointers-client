@@ -1,4 +1,4 @@
-import { API_URL } from "~/constants/login"; // Importa la URL de la API
+import { API_URL } from "~/constants/api"; // Importa la URL de la API
 
 export const authenticate = async (email: string, password: string) => {
   const response = await fetch(API_URL); // Usa la constante API_URL

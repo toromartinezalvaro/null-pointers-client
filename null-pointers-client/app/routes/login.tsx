@@ -14,9 +14,3 @@ export default function LoginPage() {
       <Login /></div>
   );
 }
-/* va dentro de loguin cargar datos <h2>Lista de Usuarios:</h2>
-<ul>
-  {users.map((user, index) => (
-    <li key={index}>{user.email}</li>
-  ))}
-</ul>*/

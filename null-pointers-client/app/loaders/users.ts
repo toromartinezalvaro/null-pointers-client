@@ -1,5 +1,5 @@
 import { json } from "@remix-run/node";
-import { API_URL } from "~/constants/login";
+import { API_URL } from "~/constants/api";
 import { User } from "~/interfaces/user"; // Importa la interfaz
 
 export const loader = async () => {
@@ -9,7 +9,8 @@ export const loader = async () => {
     throw new Response("Error al cargar los usuarios", { status: response.status });
   }
 
-  const users: User[] = await response.json(); // Asegúrate de tipar los datos
-  return json(users); // Retorna los datos tipados
+  const users: User[] = await response.json(); // Tipar los datos como `User[]`
+  return json(users); // Devuelve los datos como JSON
 };
+
 

@@ -3,6 +3,10 @@ import { usersLoader } from "../loaders/usersLoader";
 import UsersTable from "../components/UsersTable";
 import { useUserPreferences } from "../hooks/useUserPreferences"; // Importamos el custom hook
 
+/*logica para proteger vistas*/
+import { useAuth } from "~/hooks/useAuth";
+import { Navigate } from "@remix-run/react";
+
 export const loader = usersLoader;
 
 export default function Users() {
@@ -15,6 +19,13 @@ export default function Users() {
     visibilidadPreferencias,
   });
 
+
+   /*logica para proteger vistas*/
+  const { authorized, reason } = useAuth("Administrador");
+
+  if (!authorized) {
+    return <Navigate to="/login" replace />;
+  }
   return (
     <UsersTable
       usuariosData={usuariosData}

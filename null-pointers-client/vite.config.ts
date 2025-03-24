@@ -9,16 +9,7 @@ export default defineConfig({
     }),
     tsconfigPaths(),
   ],
-  build: {
-    sourcemap: true, // Habilita los mapas de fuente
-  },
   server: {
-    watch: {
-      ignored: [], // Asegúrate de que ninguna carpeta esté excluida
-    },
+    port: 4200, // Cambia el puerto aquí
   },
 });
-
-
-
-

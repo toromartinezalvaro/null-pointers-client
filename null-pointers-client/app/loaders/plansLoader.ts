@@ -1,7 +1,18 @@
+import { destinoService } from "~/services/destinoService";
+
 export async function loader() {
-    return {
-      destino: "Destino dinámico",
-      srcA: "/ruta/a/imagen",
+  try {
+    const data = {
+      destino: destinoService.destinoA,
+      srcA: destinoService.srcA,
+      SrcE: destinoService.srcE,
+      destinoE: destinoService.destinoE,
     };
+    return {
+      data,
+    };
+  } catch (error) {
+    console.error("Error loading data:", error);
+    throw error;
   }
-  
+}  

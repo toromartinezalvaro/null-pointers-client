@@ -11,6 +11,6 @@ export function links() {
 // Ruta principal que pasa los datos al componente
 export default function PlansRoute() {
   const { destino, srcA } = useLoaderData<{ destino: string; srcA: string }>();
-
+  console.log("Datos del loader:",{destino, srcA});
   return <Plans destino={destino} srcA={srcA} />;
 }

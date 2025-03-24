@@ -1,5 +1,5 @@
 import { Link } from "@remix-run/react";
-import { PlansProps } from "~/interfaces/plans";
+import { PlansProps } from "../interfaces/plans";
 
 export default function Plans({ destino, srcA }: PlansProps) {
   return (
@@ -33,7 +33,7 @@ export default function Plans({ destino, srcA }: PlansProps) {
                 target="_blank"
                 rel="noopener noreferrer"
               >
-                <img src="/assets/img/trs-cancun.jpg" alt="TRS Coral Hotel" />
+                <img src="/imagenes/trs-cancun.jpg" alt="TRS Coral Hotel" />
               </a>
             </div>
             <div className="container__hospedaje__opcion__info">
@@ -64,7 +64,7 @@ export default function Plans({ destino, srcA }: PlansProps) {
                 target="_blank"
                 rel="noopener noreferrer"
               >
-                <img src="/assets/img/avion-avianca.jpg" alt="Avianca" />
+                <img src="/imagenes/avion-avianca.jpg" alt="Avianca" />
               </a>
             </div>
             <div className="container__hospedaje__opcion__info">

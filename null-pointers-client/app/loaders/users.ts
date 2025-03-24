@@ -1,5 +1,5 @@
 import { json } from "@remix-run/node";
-import { API_URL } from "~/constants/login";
+import { API_URL } from "~/constants/api";
 import { User } from "~/interfaces/user"; // Importa la interfaz
 
 export const loader = async () => {

@@ -1,12 +1,13 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom"; // Para redirigir al login
 import "~/styles/record.css";
-import { registerUser } from "../services/recordService"; // Verifica esta rut
+import { registerUser } from "../services/recordService"; // Verifica esta ruta
 import { UserRecord } from "~/interfaces/UserRecord"; // Importa la interfaz de datos
 
 const RegisterForm: React.FC = () => {
   const [isCheckboxChecked, setIsCheckboxChecked] = useState(false); // Estado del checkbox
   const [successMessage, setSuccessMessage] = useState(false); // Estado del mensaje de éxito
+  const [selectedRole, setSelectedRole] = useState<string>(""); // Estado para el rol seleccionado
   const navigate = useNavigate(); // Hook para redirigir al login
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
@@ -17,10 +18,12 @@ const RegisterForm: React.FC = () => {
       email: formData.get("email") as string,
       nombre: formData.get("nombre") as string,
       password: formData.get("password") as string,
+      rol: selectedRole, // Incluye el rol seleccionado
     };
+  
 
     // Validación de campos requeridos
-    if (!user.email || !user.nombre || !user.password) {
+    if (!user.email || !user.nombre || !user.password || !user.rol) {
       alert("Todos los campos son obligatorios.");
       return;
     }
@@ -44,6 +47,10 @@ const RegisterForm: React.FC = () => {
 
   const handleCheckboxChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setIsCheckboxChecked(event.target.checked); // Actualiza el estado del checkbox
+  };
+
+  const handleRoleChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    setSelectedRole(event.target.value); // Actualiza el rol seleccionado
   };
 
   return (
@@ -70,38 +77,51 @@ const RegisterForm: React.FC = () => {
           placeholder="Enter your password"
           required
         />
+
+        {/* Selección de Rol con etiqueta dentro del campo */}
+        <label>
+          <select value={selectedRole} onChange={handleRoleChange} required  style={{
+              padding: "8px",
+              width: "242%",
+              borderRadius: "0px",
+              border: "1px solid #ccc",
+              transform: "translateX(-230px)",
+            }}>
+            <option  value="" disabled>Selecciona tu rol: </option>
+            <option value="Cliente">Cliente</option>
+            <option value="Administrador">Administrador</option>
+          </select>
+        </label>
+
         <label id="terms">
-          <input 
+          <input
             type="checkbox"
-         
             onChange={handleCheckboxChange}
             checked={isCheckboxChecked}
           />
-        {" "}
-            Acepto los{" "}
-            <a
-              id="terms"
-              href="https://amadeus.com/es/politicas/privacy-policy"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              <strong>términos y condiciones</strong>
-            </a>{" "}
-            de la política de protección de datos.
-          </label>
+          {" "}
+          Acepto los{" "}
+          <a
+            id="terms"
+            href="https://amadeus.com/es/politicas/privacy-policy"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <strong>términos y condiciones</strong>
+          </a>{" "}
+          de la política de protección de datos.
+        </label>
         <button id="button" type="submit" disabled={!isCheckboxChecked}>
           Registrarse
         </button>
         <a
-              id="terms"
-              href="/login"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              <strong>Ya estoy Resgistrado</strong>
-         </a>
-
-
+          id="termss"
+          href="/login"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <strong>Ya estoy Registrado</strong>
+        </a>
       </form>
       {successMessage && (
         <div id="mensaje-exito">

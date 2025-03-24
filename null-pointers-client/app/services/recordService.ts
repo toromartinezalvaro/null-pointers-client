@@ -3,17 +3,19 @@ import { UserRecord } from "../interfaces/UserRecord"; // Interfaz para tipado d
 
 export const registerUser = async (user: UserRecord) => {
   try {
-    const response = await fetch(`${API_URL}`, { 
+    const response = await fetch(`${API_URL}`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify(user),
+      body: JSON.stringify(user), // Envia el usuario con el rol incluido
     });
 
     if (!response.ok) {
       const errorData = await response.json();
-      throw new Error(`Error ${response.status}: ${errorData.message || "Error desconocido"}`);
+      throw new Error(
+        `Error ${response.status}: ${errorData.message || "Error desconocido"}`
+      );
     }
 
     return await response.json(); // Devuelve la respuesta del backend

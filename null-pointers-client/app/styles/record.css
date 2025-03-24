@@ -26,7 +26,7 @@
      justify-content: center; /* Centra horizontalmente */
      align-items: flex-end;
      flex-direction: column; /* Organiza los elementos en columna */
-     gap: 35px; /* Espaciado entre los elementos */
+     gap: 25px; /* Espaciado entre los elementos */
      margin-right: 5%;
      }
    
@@ -39,6 +39,7 @@
        border-radius: 0;/* Asegura que los campos llenen el espacio */
        box-sizing: border-box;
        text-align: center;
+       margin-top: 3rem;
      }
    
      #nombre{
@@ -63,6 +64,8 @@
        box-sizing: border-box;
        text-align: center;
      }
+
+    
    
      #button{
        width:  48%;
@@ -99,8 +102,18 @@
        height: 8%; 
        color: white;
        text-align: center;
+
    
      }
+
+     #termss{
+      width:  48%;
+      height: 8%; 
+      color: white;
+      text-align: center;
+      transform: translateY(-20px);
+  
+    }
    
      #mensaje-exito {
        position: absolute;
@@ -123,3 +136,5 @@
        background-color: #003f7f; /* Un tono más oscuro al hacer clic */
        transform: scale(1.05); /* Reduce el tamaño un poco para el efecto de clic */
      }
+
+    

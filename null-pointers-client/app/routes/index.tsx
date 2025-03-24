@@ -8,7 +8,6 @@ const imageUrl = "/assets/img/image1.png";
 
   return (
     <div className="start">
-      
        <Start imageSrc={imageUrl} />
     </div>
 

@@ -2,12 +2,11 @@
 import { useState } from 'react';
 import type { LoaderFunction } from '@remix-run/node';
 import { json, Link, useNavigate } from '@remix-run/react';
-import styles from '../styles/tarjetas.css';
+import styles from '~/styles/tarjetas.css?url';
 import { useDestino } from '../context/destinoService';
 
 export const links = () => [
     { rel: 'stylesheet', href: styles },
-    
 ];
 
 export const loader: LoaderFunction = async () => {
@@ -22,7 +21,6 @@ export default function Tarjetas() {
     const [disAtras, setDisAtras] = useState(true);         //ocultar atras
     const [hidSig, setHidSig] = useState(false);            //ocultar siguiente
     const [calcular, setCalcular] = useState(true);         //calcular destino
-    
 
     const PreferenciasLabels = {
         PLAYA: "Playa",
@@ -43,8 +41,8 @@ export default function Tarjetas() {
         MENOR_QUE_TREINTA: "Menos de 30",
         TREINTA_Y_CINCUENTA: "Entre 30 y 50",
         MAYOR_QUE_CINCUENTA: "Más de 50",
-      }
-    
+    }
+
     const preguntas = [
         "¿Qué tipo de entorno prefieres para tus vacaciones?",
         "¿Qué clima prefieres durante tus vacaciones?",
@@ -53,8 +51,8 @@ export default function Tarjetas() {
         "¿Cuánto tiempo planeas quedarte de vacaciones?",
         "¿Cuál es tu rango de edad?",
     ];
-    
-    const opciones = 
+
+    const opciones =
     [
         ["Playa", "Montaña", "Ciudad"],
         ["Caluroso", "Templado", "Frío"],
@@ -63,8 +61,8 @@ export default function Tarjetas() {
         ["Menos de una semana", "Entre una y dos semanas", "Más de dos semanas"],
         ["Menos de 30", "Entre 30 y 50", "Más de 50"]
     ];
-    
-    const imagenes = 
+
+    const imagenes =
         [
             ["/imagenes/imagen1.jpg", "/imagenes/imagen2.jpg", "/imagenes/imagen3.jpg"],
             ["/imagenes/Tulum.jpg", "/imagenes/Templado.jpg", "/imagenes/Frio.jpg"],
@@ -73,8 +71,7 @@ export default function Tarjetas() {
             ["/imagenes/findesemana.jpg", "/imagenes/dosemanas.jpg", "/imagenes/calendario.jpg"],
             ["/imagenes/veinte.jpg", "/imagenes/treinta.jpg", "/imagenes/cincuenta.jpg"]
         ];
-    
-    
+
     const datos = [
         ["¿Sabías que las playas no siempre son doradas? Hay playas con arena negra volcánica, rosa coralina y hasta verde olivo.",
         "Las montañas tienen su propio clima. Al subir una montaña, puedes experimentar diferentes climas en pocos kilómetros.",
@@ -95,22 +92,21 @@ export default function Tarjetas() {
         "A menudo, se busca ir más allá de los destinos turísticos más populares y descubrir lugares menos conocidos.",
         "Muchos viajeros mayores se unen a grupos organizados para conocer a personas con intereses similares y compartir experiencias."]
     ];
-    
+
     const getKey = (value: string): string => {
         const entries = Object.entries(PreferenciasLabels);
         const entry = entries.find(([, val]) => val === value);
         return entry ? entry[0] : "";
-      };
+    };
 
-      const verificarSeleccion = () => {
+        const verificarSeleccion = () => {
         if (opcSelect !== "") {
-          const key = getKey(opcSelect);
-          sessionStorage.setItem(`respuesta_${indice}`, key); // Guarda la respuesta seleccionada
-          setDisSig(false); // Habilita el botón "Siguiente"
+            const key = getKey(opcSelect);
+            sessionStorage.setItem(`respuesta_${indice}`, key); // Guarda la respuesta seleccionada
+            setDisSig(false); // Habilita el botón "Siguiente"
         }
         setDisAtras(indice === 0); // Deshabilita el botón "Atrás" si estamos en la primera pregunta
-      };
-    
+        };
 
     type DestinoService = {
         indice: number;
@@ -137,36 +133,35 @@ export default function Tarjetas() {
             setOpcSelect("");                               //limpia la opción seleccionada
             return;
         }
-    
+
         if (indice === preguntas.length - 1) {
           setHidSig(false);                             //oculta el botón siguiente al final
           setDisSig(true);                              //deshabilita el botón siguiente
         }
-    
+
         setRespuestasSer(respuestasSer.slice(0, -1));       //elimina la última respuesta
         setIndice(indice - 1);                          //decrementa el indice
         setOpcSelect("");                               //limpia la opción seleccionada
         setHidSig(false);                               //muestra el botón siguiente
-        setCalcular(true);                            //oculta el botón calculadestino        
-      };
+        setCalcular(true);                            //oculta el botón calculadestino
+        };
 
     const siguiente = () => {
         if (indice === preguntas.length - 1) {
-          setHidSig(true);                       //oculta el botón siguiente al final
-          setCalcular(false);                    //muestra el botón calcular destino
-          setDisAtras(false);                   //habilita el botón atras
-          setOpcSelect("");                     //limpia la opción seleccionada
-          return;
+            setHidSig(true);                       //oculta el botón siguiente al final
+            setCalcular(false);                    //muestra el botón calcular destino
+            setDisAtras(false);                   //habilita el botón atras
+            setOpcSelect("");                     //limpia la opción seleccionada
+            return;
         } else {
           setHidSig(false);                    //muestra el botón siguiente
-                    
         }
-        setRespuestasSer([...respuestasSer, opcSelect]); //agrega la opción seleccionada a la lista de respuestas      
+        setRespuestasSer([...respuestasSer, opcSelect]); //agrega la opción seleccionada a la lista de respuestas
         setIndice(indice + 1);                     //incrementa el indice
         setOpcSelect("");                          //limpia la opción seleccionada
         setDisSig(true);                           //deshabilita el botón siguiente
         setDisAtras(false);                        //habilita el botón atras
-      }
+        }
 
     const contadores = Array.from({ length: preguntas.length }, (_, idx) => (idx <= indice ? 'active' : 'inactive'));
 
@@ -204,7 +199,6 @@ export default function Tarjetas() {
                                 checked={opcSelect === opcion}
                                 onChange={() => { setOpcSelect(opcion); verificarSeleccion(); }}
                             />
-                            
                         </label>
                     </div>
                 ))}

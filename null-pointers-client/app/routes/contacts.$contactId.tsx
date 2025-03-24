@@ -3,6 +3,10 @@ import type { FunctionComponent } from "react";
 
 import type { ContactRecord } from "../data";
 
+/*logica para proteger vistas*/
+import { useAuth } from "~/hooks/useAuth";
+import { Navigate } from "@remix-run/react";
+
 export default function Contact() {
   const contact = {
     first: "Your",
@@ -12,6 +16,14 @@ export default function Contact() {
     notes: "Some notes",
     favorite: true,
   };
+
+    /*logica para proteger vistas*/
+    const { authorized, reason } = useAuth("Cliente");
+
+    if (!authorized) {
+      return <Navigate to="/login" replace />;
+    }
+  
 
   return (
     <div id="contact">

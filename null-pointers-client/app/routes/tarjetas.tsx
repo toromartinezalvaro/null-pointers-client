@@ -5,6 +5,11 @@ import { json, Link, useNavigate } from '@remix-run/react';
 import styles from '~/styles/tarjetas.css?url';
 import { useDestino } from '../context/destinoService';
 
+
+/*logica para proteger vistas*/
+import { useAuth } from "~/hooks/useAuth";
+import { Navigate } from "@remix-run/react";
+
 export const links = () => [
     { rel: 'stylesheet', href: styles },
 ];
@@ -14,6 +19,14 @@ export const loader: LoaderFunction = async () => {
 }
 
 export default function Tarjetas() {
+
+     /*logica para proteger vistas*/
+   const { authorized, reason } = useAuth("Cliente");
+
+   if (!authorized) {
+     return <Navigate to="/login" replace />;
+   }
+
     const navigate = useNavigate();                         //navegar entre rutas
     const {indice, setIndice, respuestasSer, setRespuestasSer} = useDestino();               //indice de la pregunta
     const [opcSelect, setOpcSelect] = useState("");         //opción seleccionada

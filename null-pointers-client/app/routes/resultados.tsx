@@ -3,7 +3,19 @@ import { Form, useLoaderData, useNavigate } from "@remix-run/react";
 import { json } from "@remix-run/node";
 import { destinoService } from "../services/destinoService";
 
+/*logica para proteger vistas*/
+import { useAuth } from "~/hooks/useAuth";
+import { Navigate } from "@remix-run/react";
+
 export const links = () => {
+
+   /*logica para proteger vistas*/
+   const { authorized, reason } = useAuth("Cliente");
+
+   if (!authorized) {
+     return <Navigate to="/login" replace />;
+   }
+
   return [{ rel: "stylesheet", href: styles },
     {
       rel: "preconnect", href: "https://fonts.googleapis.com"

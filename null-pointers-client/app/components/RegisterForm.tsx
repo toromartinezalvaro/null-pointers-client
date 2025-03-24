@@ -86,6 +86,8 @@ const RegisterForm: React.FC = () => {
               borderRadius: "0px",
               border: "1px solid #ccc",
               transform: "translateX(-230px)",
+              textAlign: "center",
+              color: "#333", 
             }}>
             <option  value="" disabled>Selecciona tu rol: </option>
             <option value="Cliente">Cliente</option>

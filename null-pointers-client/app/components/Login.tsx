@@ -41,11 +41,10 @@ export default function Login() {
 
         // Redirigir según el rol
         if (user.role === "Administrador") {
-          navigate("/reports"); // Vista para administradores
+          navigate("/reports/destinations"); // Vista para administradores
         } else if (user.role === "Cliente") {
           navigate("/tarjetas"); // Vista para clientes
         }
-      
       } else {
         alert("Usuario no existe"); // Usuario no encontrado
       }
@@ -53,7 +52,6 @@ export default function Login() {
       console.error("Error al autenticar:", error);
       alert("Error en la solicitud."); // Error al conectarse o lógica interna
     }
-    
   };
 
   return (

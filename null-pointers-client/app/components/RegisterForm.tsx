@@ -108,10 +108,10 @@ const RegisterForm: React.FC = () => {
           </a>{" "}
           de la política de protección de datos.
         </label>
-        <button id="button" type="submit" disabled={!isCheckboxChecked}>
+        <button className="registerButton" id="button" type="submit" disabled={!isCheckboxChecked}>
           Registrarse
         </button>
-        <a id="termss" href="/login" rel="noopener noreferrer">
+        <a className="registradoButton" id="termss" href="/login" rel="noopener noreferrer">
           <strong>Ya estoy Registrado</strong>
         </a>
       </form>

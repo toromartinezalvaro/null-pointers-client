@@ -5,8 +5,8 @@ export default function RecordPage() {
   const imageUrl = "/assets/img/registro.png";
 
   return (
-    <div className="start" id="container2">
-      <img id="imgrec" src={imageUrl}/>
+    <div className="record-container">
+      <img className="imgrec" src={imageUrl} alt="Register"/>
       <RegisterForm />
     </div>
   );

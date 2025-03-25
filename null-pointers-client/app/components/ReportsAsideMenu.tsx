@@ -5,7 +5,7 @@ const ReportsAsideMenu = () => {
     <aside className="sidebar">
       <h2>Reports</h2>
       <nav>
-        <ul>
+        <ul className="reports-menu">
           <li>
             <NavLink
               to="destinations"

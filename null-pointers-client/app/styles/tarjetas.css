@@ -22,11 +22,11 @@
     display: flex;
     flex-direction: column;
     flex-wrap: wrap;
-    justify-content: center;
-    align-items: center;
-    width: 100%;
-    height: 94vh;
+    width: 90%;
+    height: 100%;
     background-color: #000835;
+    margin: 1% 5%;
+    padding: 20px;
   }
   
   .datos {
@@ -59,10 +59,6 @@
   .scale-in-ver-center {
     -webkit-animation: scale-in-ver-center 0.5s cubic-bezier(0.250, 0.460, 0.450, 0.940) both;
     animation: scale-in-ver-center 0.5s cubic-bezier(0.250, 0.460, 0.450, 0.940) both;
-    font-size: 2rem;
-    margin-bottom: 5%;
-    border-radius: 15px;
-    padding: 5px 10px;
   }
   
   @-webkit-keyframes scale-in-ver-center {
@@ -89,9 +85,6 @@
     align-items: center;
     justify-content: center;
     flex-wrap: wrap;
-    width: 100%;
-    gap: 5%;
-    color: transparent;
   }
   
   .card {
@@ -210,7 +203,7 @@
   }
   
   .navegacion::before {
-    content: url('/imagenes/aeronave.png');
+    content: url('../../../assets/img/aeronave.png');
     position: absolute;
     bottom: 70px;
     right: -8px;
@@ -240,8 +233,6 @@
     display: flex;
     flex-wrap: wrap;
     justify-content: space-evenly;
-    gap: 10%;
-    width: 80%;
   }
   
   button {
@@ -292,6 +283,8 @@
     .container__general {
       width: 100%;
       height: 100%;
+      padding: 15px 5px;
+      margin: 2%;
     }
   
     .botones {
@@ -313,7 +306,7 @@
   
     .container__general {
       width: 100%;
-      height: 94vh;
+      height: 100%;
     }
   }
   
@@ -358,7 +351,9 @@
   
     .container__general {
       width: 100%;
-      height: 94vh;
+      height: auto;
+      padding: 15px 5px;
+      margin: 2%;
     }
   }
   
@@ -366,7 +361,6 @@
     display: flex;
     justify-content: space-evenly;
     color: #fff;
-    width: 100%;
   }
 
   .radio-label {
@@ -378,3 +372,33 @@
     display:none;
   }
   
+  .dots {
+    margin-top: 3%;
+    width: 1rem;
+    height: 1rem;
+    transform: scale(1.5);
+    cursor: pointer;
+    text-align: center;
+  }
+
+.card-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 2%;
+  width: 100%;
+}
+
+.card {
+  position: relative;
+  transition: transform 0.3s ease-in-out;
+}
+
+.card {
+  transform: scale(1.05);
+}
+
+.bg {
+  background-color: #000835;
+}

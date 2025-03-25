@@ -1,12 +1,13 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { useState } from "react";
-import type { LoaderFunction } from "@remix-run/node";
-import { json, Link, useNavigate } from "@remix-run/react";
-import "../styles/tarjetas.css";
-import { useDestino } from "../context/destinoService";
+import { useState } from 'react';
+import type { LoaderFunction } from '@remix-run/node';
+import { json, Link, useNavigate, Navigate } from '@remix-run/react';
+import styles from '~/styles/tarjetas.css?url';
+import { useDestino } from '../context/destinoService';
+import { useAuth } from "~/hooks/useAuth";
 
 export const links = () => [
-  { rel: "stylesheet", href: "../styles/tarjetas.css" },
+    { rel: 'stylesheet', href: styles },
 ];
 
 export const loader: LoaderFunction = async () => {
@@ -14,6 +15,9 @@ export const loader: LoaderFunction = async () => {
 };
 
 export default function Tarjetas() {
+
+  const { authorized, reason } = useAuth("Cliente");
+
   const navigate = useNavigate(); //navegar entre rutas
   const { indice, setIndice, respuestasSer, setRespuestasSer } = useDestino(); //indice de la pregunta
   const [opcSelect, setOpcSelect] = useState(""); //opción seleccionada
@@ -21,6 +25,10 @@ export default function Tarjetas() {
   const [disAtras, setDisAtras] = useState(true); //ocultar atras
   const [hidSig, setHidSig] = useState(false); //ocultar siguiente
   const [calcular, setCalcular] = useState(true); //calcular destino
+
+  if (!authorized) {
+    return <Navigate to="/login" replace />;
+  }
 
   const PreferenciasLabels = {
     PLAYA: "Playa",

@@ -1,6 +1,10 @@
 import { LoaderFunctionArgs } from "@remix-run/node";
 import { useLoaderData } from "@remix-run/react";
 
+/*logica para proteger vistas*/
+import { useAuth } from "~/hooks/useAuth";
+import { Navigate } from "@remix-run/react";
+
 export async function loader({ request }: LoaderFunctionArgs) {
   const url = new URL(request.url);
   const email = url.searchParams.get("email");
@@ -23,6 +27,13 @@ export async function loader({ request }: LoaderFunctionArgs) {
 
 export default function UserPreferences() {
   const preferencias = useLoaderData<{ nombre: string; nombre_continente: string }[]>();
+
+/*logica para proteger vistas*/
+const { authorized, reason } = useAuth("Administrador");
+
+if (!authorized) {
+  return <Navigate to="/login" replace />;
+}
 
   return (
     <div className="overflow-auto max-h-16">

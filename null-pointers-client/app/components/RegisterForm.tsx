@@ -1,7 +1,9 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom"; // Para redirigir al login
-import "~/styles/record.css";
+// eslint-disable-next-line import/no-unresolved
+import "~/styles/record.css?url";
 import { registerUser } from "../services/recordService"; // Verifica esta ruta
+// eslint-disable-next-line import/no-unresolved
 import { UserRecord } from "~/interfaces/UserRecord"; // Importa la interfaz de datos
 
 const RegisterForm: React.FC = () => {
@@ -20,7 +22,7 @@ const RegisterForm: React.FC = () => {
       password: formData.get("password") as string,
       rol: selectedRole, // Incluye el rol seleccionado
     };
-  
+
 
     // Validación de campos requeridos
     if (!user.email || !user.nombre || !user.password || !user.rol) {
@@ -87,7 +89,7 @@ const RegisterForm: React.FC = () => {
               border: "1px solid #ccc",
               transform: "translateX(-230px)",
               textAlign: "center",
-              color: "#333", 
+              color: "#333",
             }}>
             <option  value="" disabled>Selecciona tu rol: </option>
             <option value="Cliente">Cliente</option>
@@ -119,7 +121,6 @@ const RegisterForm: React.FC = () => {
         <a
           id="termss"
           href="/login"
-          target="_blank"
           rel="noopener noreferrer"
         >
           <strong>Ya estoy Registrado</strong>

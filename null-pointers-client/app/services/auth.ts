@@ -1,6 +1,6 @@
 
-import { API_URL } from "~/constants/api"; // Importa la URL base de la API
-import { AuthenticatedUser } from "~/interfaces/AuthenticatedUser";
+import { API_URL } from "../constants/api"; // Importa la URL base de la API
+import { AuthenticatedUser } from "../interfaces/AuthenticatedUser";
 
 export const authenticate = async (
   email: string,

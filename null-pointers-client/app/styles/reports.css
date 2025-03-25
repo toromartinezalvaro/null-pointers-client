@@ -2,6 +2,7 @@
 .reports-container {
   display: flex;
   height: 100vh;
+  height: 94vh
 }
 
 .sidebar {

@@ -34,6 +34,7 @@ body {
   height: 50px;
   cursor: pointer;
   transition: transform var(--transicion-rapida);
+  height: 80%
 }
 
 .nav__logo:hover {

@@ -1,9 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom"; // Para redirigir al login
-// eslint-disable-next-line import/no-unresolved
-import "~/styles/record.css?url";
+import "~/styles/record.css";
 import { registerUser } from "../services/recordService"; // Verifica esta ruta
-// eslint-disable-next-line import/no-unresolved
 import { UserRecord } from "~/interfaces/UserRecord"; // Importa la interfaz de datos
 
 const RegisterForm: React.FC = () => {
@@ -22,7 +20,6 @@ const RegisterForm: React.FC = () => {
       password: formData.get("password") as string,
       rol: selectedRole, // Incluye el rol seleccionado
     };
-
 
     // Validación de campos requeridos
     if (!user.email || !user.nombre || !user.password || !user.rol) {
@@ -81,29 +78,25 @@ const RegisterForm: React.FC = () => {
         />
 
         {/* Selección de Rol con etiqueta dentro del campo */}
-        <label>
-          <select value={selectedRole} onChange={handleRoleChange} required  style={{
-              padding: "8px",
-              width: "242%",
-              borderRadius: "0px",
-              border: "1px solid #ccc",
-              transform: "translateX(-230px)",
-              textAlign: "center",
-              color: "#333",
-            }}>
-            <option  value="" disabled>Selecciona tu rol: </option>
-            <option value="Cliente">Cliente</option>
-            <option value="Administrador">Administrador</option>
-          </select>
-        </label>
+        <select
+          className="role-select"
+          value={selectedRole}
+          onChange={handleRoleChange}
+          required
+        >
+          <option value="" disabled>
+            Selecciona tu rol:{" "}
+          </option>
+          <option value="Cliente">Cliente</option>
+          <option value="Administrador">Administrador</option>
+        </select>
 
         <label id="terms">
           <input
             type="checkbox"
             onChange={handleCheckboxChange}
             checked={isCheckboxChecked}
-          />
-          {" "}
+          />{" "}
           Acepto los{" "}
           <a
             id="terms"
@@ -118,11 +111,7 @@ const RegisterForm: React.FC = () => {
         <button id="button" type="submit" disabled={!isCheckboxChecked}>
           Registrarse
         </button>
-        <a
-          id="termss"
-          href="/login"
-          rel="noopener noreferrer"
-        >
+        <a id="termss" href="/login" rel="noopener noreferrer">
           <strong>Ya estoy Registrado</strong>
         </a>
       </form>

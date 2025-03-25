@@ -7,24 +7,36 @@ interface Destination {
 }
 
 export function useUserPreferences() {
-  const [preferenciasUsuario, setPreferenciasUsuario] = useState<{ [email: string]: Destination[] }>({});
-  const [visibilidadPreferencias, setVisibilidadPreferencias] = useState<{ [email: string]: boolean }>({});
+  const [preferenciasUsuario, setPreferenciasUsuario] = useState<{
+    [email: string]: Destination[];
+  }>({});
+  const [visibilidadPreferencias, setVisibilidadPreferencias] = useState<{
+    [email: string]: boolean;
+  }>({});
+  const [cargando, setCargando] = useState<{ [email: string]: boolean }>({});
 
   async function loadPreferenciasUsuario(email: string) {
     if (preferenciasUsuario[email]) {
-      setVisibilidadPreferencias((prev) => ({ ...prev, [email]: !prev[email] }));
+      setVisibilidadPreferencias((prev) => ({
+        ...prev,
+        [email]: !prev[email],
+      }));
       return;
     }
+
+    setCargando((prev) => ({ ...prev, [email]: true }));
 
     try {
       const preferencias = await fetchUserPreferences(email);
       setPreferenciasUsuario((prev) => ({
         ...prev,
-        [email]: preferencias[0]?.destinos || [],
+        [email]: preferencias || [],
       }));
       setVisibilidadPreferencias((prev) => ({ ...prev, [email]: true }));
     } catch (error) {
       console.error("Error al cargar preferencias:", error);
+    } finally {
+      setCargando((prev) => ({ ...prev, [email]: false }));
     }
   }
 
@@ -32,5 +44,6 @@ export function useUserPreferences() {
     preferenciasUsuario,
     visibilidadPreferencias,
     loadPreferenciasUsuario,
+    cargando,
   };
 }

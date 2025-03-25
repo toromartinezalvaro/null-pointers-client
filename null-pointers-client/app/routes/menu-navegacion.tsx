@@ -20,7 +20,7 @@ export default function MenuNavegacion() {
               </a>
             </li>
             <li>
-              <a href="/reports/preferences">
+              <a href="/reports/destinations">
                 Reporte
               </a>
             </li>

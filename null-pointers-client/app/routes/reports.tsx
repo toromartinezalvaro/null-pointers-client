@@ -1,9 +1,10 @@
-import { Outlet, Navigate } from "@remix-run/react";
+import { useEffect, useState } from "react";
+import { Outlet, useNavigate } from "@remix-run/react";
 import type { LinksFunction } from "@remix-run/node";
 import reportsStylesHref from "~/styles/reports.css?url";
 import ReportsAsideMenu from "~/components/ReportsAsideMenu";
 
-/*logica para proteger vistas*/
+/* Lógica para proteger vistas */
 import { useAuth } from "~/hooks/useAuth";
 
 export const links: LinksFunction = () => [
@@ -11,12 +12,19 @@ export const links: LinksFunction = () => [
 ];
 
 export default function ReportsLayout() {
-
-  /*logica para proteger vistas*/
   const { authorized } = useAuth("Administrador");
+  const navigate = useNavigate();
+  const [isClient, setIsClient] = useState(false);
 
-  if (!authorized) {
-    return <Navigate to="/login" replace />;
+  useEffect(() => {
+    setIsClient(true);
+    if (!authorized) {
+      navigate("/login", { replace: true });
+    }
+  }, [authorized, navigate]);
+
+  if (!isClient) {
+    return null;
   }
 
   return (

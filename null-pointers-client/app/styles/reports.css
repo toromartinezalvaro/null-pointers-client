@@ -2,14 +2,16 @@
 .reports-container {
   display: flex;
   height: 100vh;
-  height: 94vh
+  height: 94vh;
 }
 
 .sidebar {
-  width: 250px;
+  width: 15%;
   background-color: #282c34;
   color: white;
   padding: 20px;
+  position: fixed;
+  height: 100%;
 }
 
 .sidebar ul {
@@ -37,4 +39,10 @@
 .content {
   flex: 1;
   padding: 20px;
+  padding-left: 16%;
+  padding-top: auto;
+}
+
+.reports-menu {
+  margin-top: 2rem;
 }

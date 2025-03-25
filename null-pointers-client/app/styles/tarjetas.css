@@ -203,7 +203,7 @@
   }
   
   .navegacion::before {
-    content: url('../../../assets/img/aeronave.png');
+    content: url('/imagenes/aeronave.png');
     position: absolute;
     bottom: 70px;
     right: -8px;

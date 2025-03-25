@@ -57,7 +57,7 @@ export default function Login() {
   return (
     <div id="container2">
       <div id="Registercon">
-        <img src="public/assets/img/registro.png" id="imgrec" alt="Imagen de registro" />
+        <img src="public/assets/img/registro.png" id="imgrec" className="imgrec" alt="Imagen de registro" />
         <form id="formRegister" onSubmit={handleSubmit}>
           <input
             type="email"

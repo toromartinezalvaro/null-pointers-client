@@ -1,8 +1,8 @@
 import styles from "~/styles/resultados.css?url";
-import { Form, useLoaderData, useNavigate, Navigate } from "@remix-run/react";
-import { json } from "@remix-run/node";
-import { destinoService } from "../services/destinoService";
+import { Form, useNavigate, Navigate } from "@remix-run/react";
 import { useAuth } from "~/hooks/useAuth";
+import { useEffect, useState } from "react";
+import { destinoService } from "~/services/destinoService";
 
 export const links = () => {
   return [
@@ -18,27 +18,49 @@ export const links = () => {
   ];
 };
 
-export const loader = async () => {
-  return json({
-    respuestas: destinoService.respuestasSer,
-  });
-};
-
 export default function Resultados() {
-  const { respuestas } = useLoaderData<{ respuestas: string[] }>();
+  
+  useEffect(() => {
+    const respuestasGuardadas = sessionStorage.getItem("respuestas");
+    if (respuestasGuardadas) {
+      setRespuestas(JSON.parse(respuestasGuardadas));
+    } else {
+      console.error("No se encontraron respuestas en sessionStorage.");
+    }
+  }, []);
 
+  const [respuestas, setRespuestas] = useState<string[]>([]);
   const navigate = useNavigate();
+  const { authorized } = useAuth("Cliente");
+  
+  if (!respuestas || respuestas.length === 0) {
+    return (
+      <main className="container">
+        <h1>No se encontraron respuestas</h1>
+      </main>
+    );
+  }
 
   /*logica para proteger vistas*/
-  const { authorized } = useAuth("Cliente");
-
   if (!authorized) {
     return <Navigate to="/login" replace />;
   }
 
+
   const enviarDestino = () => {
+    // Recupera las respuestas desde sessionStorage
+    const respuestasGuardadas = sessionStorage.getItem("respuestas");
+    if (!respuestasGuardadas) {
+      console.error("No se encontraron respuestas en sessionStorage.");
+      return;
+    }
+
+    const respuestas = JSON.parse(respuestasGuardadas);
+    console.log("Respuestas procesadas:", respuestas);
+
     let destinoA = "";
     let destinoE = "";
+    
     const [pDestino, pClimatica, pActividad, pAlojamiento, dViaje, edad] =
       respuestas;
 
@@ -170,17 +192,22 @@ export default function Resultados() {
       destinoE = "Dubái";
     }
 
+    //Guardando los destinos en destinoService
     destinoService.destinoA = destinoA;
     destinoService.destinoE = destinoE;
+
     console.log(`Destino América: ${destinoA}, Destino Europa: ${destinoE}`);
     navigate("/destino"); //Redirige a la página destino
   };
 
   const volverAtras = () => {
-    destinoService.indice = 5;
-    destinoService.respuestasSer.pop();
-    navigate("/preguntas"); //Redirige a la página preguntas
-    window.history.back();
+    if (respuestas.length > 0) {
+      const nuevasRespuestas = [...respuestas];
+      nuevasRespuestas.pop(); // Elimina la última respuesta
+      sessionStorage.setItem("respuestas", JSON.stringify(nuevasRespuestas));
+      setRespuestas(nuevasRespuestas); // Actualiza el estado local
+    }
+    navigate("/tarjetas"); // Redirige a la página de tarjetas
   };
 
   return (
@@ -191,67 +218,16 @@ export default function Resultados() {
           <div className="resumen__preguntas__item">Preferencia Destino:</div>
           <div className="resumen__preguntas__item">Preferencia Climática:</div>
           <div className="resumen__preguntas__item">Preferencia Actividad:</div>
-          <div className="resumen__preguntas__item">
-            Preferencia Alojamiento:
-          </div>
+          <div className="resumen__preguntas__item">Preferencia Alojamiento:</div>
           <div className="resumen__preguntas__item">Duración viaje:</div>
           <div className="resumen__preguntas__item">Edad:</div>
         </div>
         <Form method="post" className="resumen__respuestas">
-          <div className="resumen__respuestas__item">
-            <input
-              type="text"
-              name="pDestino"
-              readOnly
-              id="entorno"
-              value={respuestas[0]}
-            />
-          </div>
-          <div className="resumen__respuestas__item">
-            <input
-              type="text"
-              name="pClimatica"
-              readOnly
-              id="clima"
-              value={respuestas[1]}
-            />
-          </div>
-          <div className="resumen__respuestas__item">
-            <input
-              type="text"
-              name="pActividad"
-              readOnly
-              id="actividades"
-              value={respuestas[2]}
-            />
-          </div>
-          <div className="resumen__respuestas__item">
-            <input
-              type="text"
-              name="pAlojamiento"
-              readOnly
-              id="alojamiento"
-              value={respuestas[3]}
-            />
-          </div>
-          <div className="resumen__respuestas__item">
-            <input
-              type="text"
-              name="dViaje"
-              readOnly
-              id="tiempo"
-              value={respuestas[4]}
-            />
-          </div>
-          <div className="resumen__respuestas__item">
-            <input
-              type="text"
-              name="edad"
-              readOnly
-              id="edad"
-              value={respuestas[5]}
-            />
-          </div>
+          {respuestas.map((respuesta, index) => (
+            <div key={index} className="resumen__respuestas__item">
+              <input type="text" readOnly value={respuesta} />
+            </div>
+          ))}
         </Form>
         <div className="resumen__imagen">
           <i className="fa-solid fa-plane-up slide-in-bottom vibrate-1"></i>
@@ -259,7 +235,7 @@ export default function Resultados() {
       </div>
       <div className="container__botones">
         <button type="button" onClick={volverAtras}>
-          Atras
+          Atrás
         </button>
         <button type="button" onClick={enviarDestino}>
           Confirmar

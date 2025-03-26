@@ -87,8 +87,8 @@ const RegisterForm: React.FC = () => {
           <option value="" disabled>
             Selecciona tu rol:{" "}
           </option>
-          <option value="Cliente">Cliente</option>
-          <option value="Administrador">Administrador</option>
+          <option value="CLIENT">Cliente</option>
+          <option value="ADMIN">Administrador</option>
         </select>
 
         <label id="terms">

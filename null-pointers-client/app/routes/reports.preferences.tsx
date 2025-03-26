@@ -13,7 +13,7 @@ export default function Preferences() {
   const preferenciasData = useLoaderData<Preferencia[]>();
 
   /*logica para proteger vistas*/
-  const { authorized } = useAuth("Administrador");
+  const { authorized } = useAuth(["ADMIN"]);
   if (!authorized) {
     return <Navigate to="/" replace />;
   }

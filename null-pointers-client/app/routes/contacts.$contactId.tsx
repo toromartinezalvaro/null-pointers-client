@@ -1,11 +1,7 @@
-import { Form } from "@remix-run/react";
+import { Form, Navigate } from "@remix-run/react";
 import type { FunctionComponent } from "react";
-
 import type { ContactRecord } from "../data";
-
-/*logica para proteger vistas*/
 import { useAuth } from "~/hooks/useAuth";
-import { Navigate } from "@remix-run/react";
 
 export default function Contact() {
   const contact = {
@@ -17,13 +13,11 @@ export default function Contact() {
     favorite: true,
   };
 
-    /*logica para proteger vistas*/
-    const { authorized, reason } = useAuth("Cliente");
+    const { authorized } = useAuth(["CLIENT", "ADMIN"]);
 
     if (!authorized) {
       return <Navigate to="/login" replace />;
     }
-  
 
   return (
     <div id="contact">

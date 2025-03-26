@@ -12,7 +12,7 @@ export const links: LinksFunction = () => [
 ];
 
 export default function ReportsLayout() {
-  const { authorized } = useAuth("Administrador");
+  const { authorized } = useAuth(["ADMIN"]);
   const navigate = useNavigate();
   const [isClient, setIsClient] = useState(false);
 

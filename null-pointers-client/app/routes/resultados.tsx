@@ -19,7 +19,7 @@ export const links = () => {
 };
 
 export default function Resultados() {
-  
+
   useEffect(() => {
     const respuestasGuardadas = sessionStorage.getItem("respuestas");
     if (respuestasGuardadas) {
@@ -31,8 +31,8 @@ export default function Resultados() {
 
   const [respuestas, setRespuestas] = useState<string[]>([]);
   const navigate = useNavigate();
-  const { authorized } = useAuth("Cliente");
-  
+  const { authorized } = useAuth(["CLIENT", "ADMIN"]);
+
   if (!respuestas || respuestas.length === 0) {
     return (
       <main className="container">
@@ -60,7 +60,7 @@ export default function Resultados() {
 
     let destinoA = "";
     let destinoE = "";
-    
+
     const [pDestino, pClimatica, pActividad, pAlojamiento, dViaje, edad] =
       respuestas;
 

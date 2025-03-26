@@ -13,7 +13,7 @@ export const loader: LoaderFunction = async () => {
 };
 
 export default function Tarjetas() {
-  const { authorized, reason } = useAuth("Cliente");
+  const { authorized, reason } = useAuth(["CLIENT", "ADMIN"]);
 
   const navigate = useNavigate(); //navegar entre rutas
   const { indice, setIndice, respuestasSer, setRespuestasSer } = useDestino(); //indice de la pregunta

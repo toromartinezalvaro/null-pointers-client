@@ -56,13 +56,13 @@ body, html {
   text-align: center;
 }
 
-#button {
+.sessionButton {
   width: 48%;
   height: 10%;
   padding: 12px;
   font-size: 30px;
   border: 1px solid;
-  border-radius: 0; /* Asegura que los campos llenen el espacio */
+  border-radius: 15px; /* Asegura que los campos llenen el espacio */
   box-sizing: border-box;
   background-color: #0c66e1;
   color: white;
@@ -72,12 +72,12 @@ body, html {
   align-items: center;
 }
 
-#button:hover {
+.sessionButton:hover {
   background-color: #0056b3; /* Cambio a un azul más oscuro */
   transform: scale(1); /* Aumenta ligeramente el tamaño */
 }
 
-#button:active {
+.sessionButton:active {
   background-color: #003f7f; /* Un tono más oscuro al hacer clic */
   transform: scale(1.05); /* Reduce el tamaño un poco para el efecto de clic */
 }
@@ -90,7 +90,7 @@ body, html {
   opacity: 1; /* Opacidad completa al pasar el ratón por encima */
 }
 
-#imgrec:hover {
+.imgrec:hover {
   opacity: 0.3; /* Opacidad inicial: 30% */
 }
 

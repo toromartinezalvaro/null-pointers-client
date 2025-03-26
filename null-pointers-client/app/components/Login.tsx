@@ -31,18 +31,23 @@ export default function Login() {
     }
 
     try {
-      // Autenticación con datos quemados (servicio simulate/authenticate)
       const user = await authenticate(data.email, data.password);
 
       if (user) {
-        // Guardar token y rol en localStorage
-        localStorage.setItem("token", user.token);
-        localStorage.setItem("role", user.role);
+        // Guardar token y rol en sessionStorage
+        sessionStorage.setItem(
+          "userAuthData",
+          JSON.stringify({
+            token: user.token,
+            role: user.userType,
+            email: data.email
+          })
+        );
 
         // Redirigir según el rol
-        if (user.role === "Administrador") {
+        if (user.userType === "ADMIN") {
           navigate("/reports/destinations"); // Vista para administradores
-        } else if (user.role === "Cliente") {
+        } else if (user.userType === "CLIENT") {
           navigate("/tarjetas"); // Vista para clientes
         }
       } else {
@@ -89,7 +94,7 @@ export default function Login() {
               <strong>términos y condiciones</strong>
             </a>.
           </label>
-          <button type="submit" id="button" disabled={!aceptado}>
+          <button type="submit" className="sessionButton" id="button" disabled={!aceptado}>
             Iniciar Sesión
           </button>
         </form>

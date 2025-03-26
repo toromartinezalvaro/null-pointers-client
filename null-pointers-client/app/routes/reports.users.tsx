@@ -24,7 +24,7 @@ export default function Users() {
   } = useUserPreferences();
 
   /* Lógica para proteger vistas */
-  const { authorized } = useAuth("Administrador");
+  const { authorized } = useAuth(["ADMIN"]);
 
   if (!authorized) {
     return <Navigate to="/login" replace />;

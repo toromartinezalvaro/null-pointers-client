@@ -220,7 +220,7 @@ export default function Destino() {
   
 
   /*logica para proteger vistas*/
-  const { authorized } = useAuth("Cliente");
+  const { authorized } = useAuth(["CLIENT", "ADMIN"]);
 
   useEffect(() => {
     const destinoA = destinoService.destinoA as DestinoKey;

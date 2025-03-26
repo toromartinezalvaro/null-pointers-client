@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "@remix-run/react";
-import styles from "../styles/destino.css";
+import styles from "~/styles/destino.css?url";
 import { destinoService } from "../services/destinoService";
 
 /*logica para proteger vistas*/
@@ -9,13 +9,6 @@ import { Navigate } from "@remix-run/react";
 
 export const links = () => {
 
-   /*logica para proteger vistas*/
-   const { authorized, reason } = useAuth("Cliente");
-
-   if (!authorized) {
-     return <Navigate to="/login" replace />;
-   }
-   
   return [{ rel: "stylesheet", href: styles }];
 };
 
@@ -195,36 +188,24 @@ interface Destino {
     control?: boolean;
 }
 
-interface SeleccionarDestinoProps {
-    destinoA: DestinoKey;
-    setAmerica: React.Dispatch<React.SetStateAction<string>>;
-    setEuropa: React.Dispatch<React.SetStateAction<string>>;
-    setSrcA: React.Dispatch<React.SetStateAction<string>>;
-    setSrcE: React.Dispatch<React.SetStateAction<string>>;
-    setDatosA: React.Dispatch<React.SetStateAction<string[]>>;
-    setDatosE: React.Dispatch<React.SetStateAction<string[]>>;
-    setControl: React.Dispatch<React.SetStateAction<boolean>>;
-}
-
 const seleccionarDestino = (
-    destinoA: SeleccionarDestinoProps['destinoA'],
-    setAmerica: SeleccionarDestinoProps['setAmerica'],
-    setEuropa: SeleccionarDestinoProps['setEuropa'],
-    setSrcA: SeleccionarDestinoProps['setSrcA'],
-    setSrcE: SeleccionarDestinoProps['setSrcE'],
-    setDatosA: SeleccionarDestinoProps['setDatosA'],
-    setDatosE: SeleccionarDestinoProps['setDatosE'],
-    setControl: SeleccionarDestinoProps['setControl'],
-    ) => {
-        const destino: Destino = destinosConfig[destinoA];
-    if (destino) {
-        setAmerica(destino.america);
-        setEuropa(destino.europa);
-        setSrcA(destino.srcA);
-        setSrcE(destino.srcE);
-        setDatosA(destino.datosA);
-        setDatosE(destino.datosE);
-    }
+  destinoA: DestinoKey,
+  setAmerica: React.Dispatch<React.SetStateAction<string>>,
+  setEuropa: React.Dispatch<React.SetStateAction<string>>,
+  setSrcA: React.Dispatch<React.SetStateAction<string>>,
+  setSrcE: React.Dispatch<React.SetStateAction<string>>,
+  setDatosA: React.Dispatch<React.SetStateAction<string[]>>,
+  setDatosE: React.Dispatch<React.SetStateAction<string[]>>
+) => {
+  const destino = destinosConfig[destinoA];
+  if (destino) {
+    setAmerica(destino.america);
+    setEuropa(destino.europa);
+    setSrcA(destino.srcA);
+    setSrcE(destino.srcE);
+    setDatosA(destino.datosA);
+    setDatosE(destino.datosE);
+  }
 };
 
 export default function Destino() {
@@ -235,14 +216,57 @@ export default function Destino() {
   const [srcE, setSrcE] = useState("");
   const [datosA, setDatosA] = useState<string[]>([]);
   const [datosE, setDatosE] = useState<string[]>([]);
-  const [control, setControl] = useState(true);
+  const [control] = useState(false);
+  
+
+  /*logica para proteger vistas*/
+  const { authorized } = useAuth("Cliente");
 
   useEffect(() => {
-    seleccionarDestino(destinoService.destinoA as DestinoKey, setAmerica, setEuropa, setSrcA, setSrcE, setDatosA, setDatosE, setControl);
+    const destinoA = destinoService.destinoA as DestinoKey;
+    const destinoE = destinoService.destinoE as DestinoKey;
+  
+    console.log("Destino América:", destinoA);
+    console.log("Destino Europa:", destinoE);
+  
+    if (destinoA && destinosConfig[destinoA]) {
+      const destinoAmerica = destinosConfig[destinoA];
+      setAmerica(destinoAmerica.america);
+      setSrcA(destinoAmerica.srcA);
+      setDatosA(destinoAmerica.datosA);
+    } else {
+      console.error("Destino América no válido:", destinoA);
+    }
+  
+    if (destinoE && destinosConfig[destinoE]) {
+      const destinoEuropa = destinosConfig[destinoE];
+      setEuropa(destinoEuropa.europa);
+      setSrcE(destinoEuropa.srcE);
+      setDatosE(destinoEuropa.datosE);
+    } else {
+      console.error("Destino Europa no válido:", destinoE);
+      // Asigna un valor por defecto
+      setEuropa("Dubai");
+      setSrcE("/imagenes/dubai.jpg");
+      setDatosE(["Emiratos Árabes Unidos", "Árabe", "Burj Khalifa", "Shawarma"]);
+    }
   }, []);
+
+  if (!authorized) {
+    return <Navigate to="/login" replace />;
+  }
 
   return (
     <main className="container">
+      {/* Botón para volver a la página de resultados */}
+      <div className="volver-container">
+        <button
+          className="volver-boton"
+          onClick={() => navigate("/resultados")}
+        >
+          Volver a Resultados
+        </button>
+      </div>
       <h1 className="container__titulo">Tus Destinos:</h1>
 
       {!control && (
@@ -256,7 +280,7 @@ export default function Destino() {
       <div className="container--opciones">
         <section className="opciones--opcion">
           <div className="opcion__encabezado">
-            <button className="opcion__encabezado__nombre" onClick={() => seleccionarDestino(destinoService.destinoA as DestinoKey, setAmerica, setEuropa, setSrcA, setSrcE, setDatosA, setDatosE, setControl)}>Aventura en América</button>
+            <button className="opcion__encabezado__nombre" onClick={() => seleccionarDestino(destinoService.destinoA as DestinoKey, setAmerica, setEuropa, setSrcA, setSrcE, setDatosA, setDatosE)}>Aventura en América</button>
           </div>
 
           <div className="opcion__destino">
@@ -276,7 +300,7 @@ export default function Destino() {
           </div>
 
           <div className="opcion__link__item">
-            <a href="/planes"><img src="/imagenes/paquete.png" alt="Explora tus opciones" /></a>
+            <a href="/plans"><img src="/imagenes/paquete.png" alt="Explora tus opciones" /></a>
             <span className="tooltiptext">Explora tus opciones</span>
           </div>
         </section>
@@ -303,7 +327,7 @@ export default function Destino() {
           </div>
 
           <div className="opcion__link__item">
-          <button onClick={() => navigate("/planes")}>
+          <button onClick={() => navigate("/plans")}>
               <img src="/imagenes/paquete.png" alt="Explora tus opciones" />
             </button>
             <span className="tooltiptext">Explora tus opciones</span>

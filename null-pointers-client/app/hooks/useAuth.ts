@@ -1,19 +1,38 @@
+import { useState, useEffect } from "react";
+
 export const useAuth = (requiredRoles: string[]) => {
-  if (typeof window === "undefined") {
-    // Si estamos en el servidor, devolvemos un estado no autorizado
-    return { authorized: false, reason: "SSR: sessionStorage no disponible" };
-  }
+  const [auth, setAuth] = useState<{ authorized: boolean; reason?: string }>({
+    authorized: false,
+  });
 
-  const userAuth = JSON.parse(sessionStorage.getItem("userAuthData") || "{}");
-  const { role, token } = userAuth;
+  useEffect(() => {
+    if (typeof window === "undefined") {
+      setAuth({ authorized: false, reason: "SSR: sessionStorage no disponible" });
+      return;
+    }
 
-  if (!token) {
-    return { authorized: false, reason: "No autenticado" };
-  }
+    const storedData = sessionStorage.getItem("userAuthData");
+    if (!storedData) {
+      setAuth({ authorized: false, reason: "No hay datos de autenticación" });
+      return;
+    }
 
-  if (!requiredRoles.includes(role)) {
-    return { authorized: false, reason: "Rol no autorizado" };
-  }
+    try {
+      const userAuth = JSON.parse(storedData);
+      const token = userAuth.token;
+      const role = userAuth.role;
 
-  return { authorized: true }; // Usuario autenticado y con rol correcto
+      if (!token) {
+        setAuth({ authorized: false, reason: "No autenticado" });
+      } else if (!requiredRoles.includes(role)) {
+        setAuth({ authorized: false, reason: "Rol no autorizado" });
+      } else {
+        setAuth({ authorized: true });
+      }
+    } catch (error) {
+      setAuth({ authorized: false, reason: "Error al parsear los datos de autenticación" });
+    }
+  }, [requiredRoles]);
+
+  return auth;
 };

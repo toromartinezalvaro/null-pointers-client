@@ -43,7 +43,7 @@ export default function Login() {
         if (user.userType === "ADMIN") {
           navigate("/reports/destinations");
         } else if (user.userType === "CLIENT") {
-          navigate("/reports");
+          navigate("/tarjetas");
         }
       } else {
         alert("Usuario no existe");

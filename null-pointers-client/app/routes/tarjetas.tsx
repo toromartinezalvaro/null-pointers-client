@@ -24,7 +24,7 @@ export default function Tarjetas() {
   const [calcular, setCalcular] = useState(true); //calcular destino
 
   if (!authorized) {
-    return <Navigate to="/login" replace />;
+    navigate("login");
   }
 
   const PreferenciasLabels = {

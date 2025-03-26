@@ -1,4 +1,3 @@
-import { useEffect, useState } from "react";
 import { Outlet, useNavigate } from "@remix-run/react";
 import type { LinksFunction } from "@remix-run/node";
 import reportsStylesHref from "~/styles/reports.css?url";
@@ -12,21 +11,13 @@ export const links: LinksFunction = () => [
 ];
 
 export default function ReportsLayout() {
-  const { authorized } = useAuth(["ADMIN"]);
   const navigate = useNavigate();
-  const [isClient, setIsClient] = useState(false);
+  const { authorized } = useAuth(["ADMIN"]);
 
-  useEffect(() => {
-    setIsClient(true);
-    if (!authorized) {
-      navigate("/login", { replace: true });
+  if (!authorized) {
+      // return <Navigate to="/login" replace />;
+      navigate("/login");
     }
-  }, [authorized, navigate]);
-
-  if (!isClient) {
-    return null;
-  }
-
   return (
     <div className="reports-container">
       <ReportsAsideMenu />

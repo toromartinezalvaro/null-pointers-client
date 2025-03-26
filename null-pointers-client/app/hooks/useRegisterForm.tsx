@@ -28,12 +28,19 @@ export const useRegisterForm = () => {
       return;
     }
 
-    const user: UserRecord = { email, nombre, password };
+    const userType = formData.get("rol") as string;
+
+    if (!userType) {
+      alert("El campo rol es obligatorio.");
+      return;
+    }
+
+    const user: UserRecord = { email, nombre, password, userType };
 
     try {
       const result = await registerUser(user); // Llama al servicio para enviar datos
       console.log("Usuario registrado correctamente:", result);
-      
+
       setMensajeExito(true); // Mostrar mensaje de éxito
 
       setTimeout(() => {

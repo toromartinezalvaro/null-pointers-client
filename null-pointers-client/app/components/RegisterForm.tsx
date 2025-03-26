@@ -18,11 +18,11 @@ const RegisterForm: React.FC = () => {
       email: formData.get("email") as string,
       nombre: formData.get("nombre") as string,
       password: formData.get("password") as string,
-      rol: selectedRole, // Incluye el rol seleccionado
+      userType: selectedRole, // Incluye el rol seleccionado
     };
 
     // Validación de campos requeridos
-    if (!user.email || !user.nombre || !user.password || !user.rol) {
+    if (!user.email || !user.nombre || !user.password || !user.userType) {
       alert("Todos los campos son obligatorios.");
       return;
     }

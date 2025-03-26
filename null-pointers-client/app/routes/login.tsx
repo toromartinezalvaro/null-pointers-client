@@ -1,16 +1,16 @@
-import { useLoaderData } from "@remix-run/react";
-/*import { loader } from "~/loaders/users";*/
 import Login from "~/components/Login";
-import { User } from "~/interfaces/user"; // Importa el tipo User
-
-//export { loader };
+import { authenticate } from "~/services/auth";
+import { useCheckbox } from "~/hooks/useCheckbox"; // Hook para manejar el checkbox
 
 export default function LoginPage() {
-  // Especifica el tipo de los datos cargados
-  const users = useLoaderData<User[]>();
+  const { checked: aceptado, handleChange: manejarCambio } = useCheckbox(false);
 
   return (
-    <div>
-      <Login /></div>
+    <Login
+      authenticate={authenticate}
+      aceptado={aceptado}
+      manejarCambio={manejarCambio}
+    />
   );
 }
+ 

@@ -15,9 +15,9 @@ export default function ReportsLayout() {
   const { authorized } = useAuth(["ADMIN"]);
 
   if (!authorized) {
-      // return <Navigate to="/login" replace />;
-      navigate("/login");
-    }
+    // return <Navigate to="/login" replace />;
+    navigate("/login");
+  }
   return (
     <div className="reports-container">
       <ReportsAsideMenu />

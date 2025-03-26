@@ -1,13 +1,14 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 
 export const useAuth = (requiredRoles: string[]) => {
   const [auth, setAuth] = useState<{ authorized: boolean; reason?: string }>({
     authorized: false,
   });
 
+  const memoizedRoles = useMemo(() => requiredRoles, [JSON.stringify(requiredRoles)]);
+
   useEffect(() => {
     if (typeof window === "undefined") {
-      setAuth({ authorized: false, reason: "SSR: sessionStorage no disponible" });
       return;
     }
 
@@ -24,7 +25,7 @@ export const useAuth = (requiredRoles: string[]) => {
 
       if (!token) {
         setAuth({ authorized: false, reason: "No autenticado" });
-      } else if (!requiredRoles.includes(role)) {
+      } else if (!memoizedRoles.includes(role)) {
         setAuth({ authorized: false, reason: "Rol no autorizado" });
       } else {
         setAuth({ authorized: true });
@@ -32,7 +33,7 @@ export const useAuth = (requiredRoles: string[]) => {
     } catch (error) {
       setAuth({ authorized: false, reason: "Error al parsear los datos de autenticación" });
     }
-  }, [requiredRoles]);
+  }, [memoizedRoles]);
 
   return auth;
 };

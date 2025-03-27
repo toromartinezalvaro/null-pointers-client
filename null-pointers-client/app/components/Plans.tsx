@@ -22,7 +22,10 @@ export default function Plans({ destino, srcA }: PlansProps) {
       <div className="container__hospedaje">
         <h2>Tus opciones de hospedaje:</h2>
         <div>
-          <p>Estas son las opciones de hospedaje que te recomendamos según tus preferencias:</p>
+          <p>
+            Estas son las opciones de hospedaje que te recomendamos según tus
+            preferencias:
+          </p>
         </div>
 
         <div className="container__hospedaje__opciones">
@@ -52,7 +55,8 @@ export default function Plans({ destino, srcA }: PlansProps) {
         <h2>Tus opciones de vuelos:</h2>
         <div className="vuelo-container">
           <p className="txt-parrafo">
-            Estos son las dos opciones de vuelos que te recomendamos según tus preferencias:
+            Estos son las dos opciones de vuelos que te recomendamos según tus
+            preferencias:
           </p>
         </div>
 
@@ -70,8 +74,9 @@ export default function Plans({ destino, srcA }: PlansProps) {
             <div className="container__hospedaje__opcion__info">
               <h3>Avianca</h3>
               <p className="txt-parrafo">
-                Avianca, una aerolínea Colombiana de categoría premium, con más de 104
-                años de trayectoria, volando a más de 104 destinos, con &quot;Avianca el cielo es de todos&quot;.
+                Avianca, una aerolínea Colombiana de categoría premium, con más
+                de 104 años de trayectoria, volando a más de 104 destinos, con
+                &quot;Avianca el cielo es de todos&quot;.
               </p>
             </div>
           </div>

@@ -19,7 +19,6 @@ export const links = () => {
 };
 
 export default function Resultados() {
-
   useEffect(() => {
     const respuestasGuardadas = sessionStorage.getItem("respuestas");
     if (respuestasGuardadas) {
@@ -46,45 +45,157 @@ export default function Resultados() {
     return <Navigate to="/login" replace />;
   }
 
-  const enviarDestino = async () => {
-    const userAuthData = sessionStorage.getItem("userAuthData");
-    const parsedData = userAuthData ? JSON.parse(userAuthData) : null;
-    const email = parsedData.email;
-
-    const body = {
-      nombre: "nombre",
-      email: email,
-      entorno: sessionStorage.getItem(`respuesta_0`),
-      clima: sessionStorage.getItem(`respuesta_1`),
-      actividad: sessionStorage.getItem(`respuesta_2`),
-      alojamiento: sessionStorage.getItem(`respuesta_3`),
-      tiempo_viaje: sessionStorage.getItem(`respuesta_4`),
-      rango_edad:sessionStorage.getItem(`respuesta_5`),
-    };
-
-    try {
-      const response = await fetch("http://localhost:8084/api/v1/preferencias", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(body),
-      });
-
-      if (!response.ok) {
-        throw new Error(`Error en la API: ${response.statusText}`);
-      }
-
-      const data = await response.json();
-
-      // Guardando los destinos en destinoService
-      destinoService.destinoA = data.destinoA;
-      destinoService.destinoE = data.destinoE;
-
-      navigate("/destino"); // Redirige a la página destino
-    } catch (error) {
-      console.error("Error en la solicitud:", error);
+  const enviarDestino = () => {
+    // Recupera las respuestas desde sessionStorage
+    const respuestasGuardadas = sessionStorage.getItem("respuestas");
+    if (!respuestasGuardadas) {
+      console.error("No se encontraron respuestas en sessionStorage.");
+      return;
     }
+
+    const respuestas = JSON.parse(respuestasGuardadas);
+    console.log("Respuestas procesadas:", respuestas);
+
+    let destinoA = "";
+    let destinoE = "";
+
+    const [pDestino, pClimatica, pActividad, pAlojamiento, dViaje, edad] =
+      respuestas;
+
+    switch (pDestino) {
+      case "Playa":
+        switch (pClimatica) {
+          case "Caluroso":
+            if (dViaje === "1-2 semanas") {
+              if (
+                edad === "Menos de 30 años" &&
+                pActividad === "Deportes y Aventuras" &&
+                pAlojamiento === "Hostal o Albergue"
+              ) {
+                destinoA = "Tulum";
+                destinoE = "Ibiza";
+              } else if (
+                edad === "Menos de 30 años" &&
+                pActividad === "Relax y Bienestar" &&
+                pAlojamiento === "Hotel de Lujo"
+              ) {
+                destinoA = "Playa del Carmen";
+                destinoE = "Santorini";
+              } else if (
+                edad === "30-50 años" &&
+                pActividad === "Cultura y Museos" &&
+                pAlojamiento === "Hotel de Lujo"
+              ) {
+                destinoA = "Honolulu";
+                destinoE = "Malta";
+              }
+            }
+            break;
+          case "Templado":
+            if (dViaje === "1-2 semanas") {
+              if (
+                edad === "Menos de 30 años" &&
+                pActividad === "Cultura y Museos" &&
+                pAlojamiento === "Hostal o Albergue"
+              ) {
+                destinoA = "San Juan";
+                destinoE = "Niza";
+              } else if (
+                edad === "30-50 años" &&
+                pActividad === "Cultura y Museos" &&
+                pAlojamiento === "Hotel de Lujo"
+              ) {
+                destinoA = "Río de Janeiro";
+                destinoE = "Lisboa";
+              }
+            }
+            break;
+        }
+        break;
+      case "Montaña":
+        switch (pClimatica) {
+          case "Frío":
+            if (dViaje === "1-2 semanas") {
+              if (edad === "Más de 50 años" && pAlojamiento === "Airbnb") {
+                if (pActividad === "Cultura y Museos") {
+                  destinoA = "Ushuaia";
+                  destinoE = "Reykjavik";
+                } else if (pActividad === "Relax y Bienestar") {
+                  destinoA = "Aspen";
+                  destinoE = "Innsbruck";
+                }
+              }
+            }
+            break;
+          case "Templado":
+            if (
+              edad === "Más de 50 años" &&
+              pAlojamiento === "Airbnb" &&
+              pActividad === "Cultura y Museos" &&
+              dViaje === "1-2 semanas"
+            ) {
+              destinoA = "Cusco";
+              destinoE = "Granada";
+            }
+            break;
+        }
+        break;
+      case "Ciudad":
+        switch (pClimatica) {
+          case "Caluroso":
+            if (
+              edad === "Más de 50 años" &&
+              pAlojamiento === "Hotel de Lujo" &&
+              pActividad === "Cultura y Museos" &&
+              dViaje === "1-2 semanas"
+            ) {
+              destinoA = "Los Angeles";
+              destinoE = "Roma";
+            }
+            break;
+          case "Frío":
+            if (
+              edad === "30-50 años" &&
+              pAlojamiento === "Hotel de Lujo" &&
+              pActividad === "Cultura y Museos" &&
+              dViaje === "1-2 semanas"
+            ) {
+              destinoA = "Toronto";
+              destinoE = "Berlín";
+            }
+            break;
+          case "Templado":
+            if (dViaje === "1-2 semanas" && pActividad === "Cultura y Museos") {
+              if (
+                edad === "30-50 años" &&
+                pAlojamiento === "Hostal o Albergue"
+              ) {
+                destinoA = "Ciudad de México";
+                destinoE = "Madrid";
+              } else if (
+                edad === "Más de 50 años" &&
+                pAlojamiento === "Hotel de Lujo"
+              ) {
+                destinoA = "Nueva York";
+                destinoE = "París";
+              }
+            }
+            break;
+        }
+        break;
+    }
+
+    if (destinoA === "") {
+      destinoA = "Bora Bora";
+      destinoE = "Dubái";
+    }
+
+    //Guardando los destinos en destinoService
+    destinoService.destinoA = destinoA;
+    destinoService.destinoE = destinoE;
+
+    console.log(`Destino América: ${destinoA}, Destino Europa: ${destinoE}`);
+    navigate("/destino"); //Redirige a la página destino
   };
 
   const volverAtras = () => {
@@ -100,15 +211,25 @@ export default function Resultados() {
   return (
     <main className="container">
       <h1 className="container__titulo">Tus preferencias:</h1>
+
+      {/* Avión animado y trayectoria */}
+      <div className="avion-animado">
+        <i className="fas fa-paper-plane"></i>
+        <div className="trayectoria"></div>
+      </div>
+
       <div className="container--resumen">
         <div className="resumen__preguntas">
           <div className="resumen__preguntas__item">Preferencia Destino:</div>
           <div className="resumen__preguntas__item">Preferencia Climática:</div>
           <div className="resumen__preguntas__item">Preferencia Actividad:</div>
-          <div className="resumen__preguntas__item">Preferencia Alojamiento:</div>
+          <div className="resumen__preguntas__item">
+            Preferencia Alojamiento:
+          </div>
           <div className="resumen__preguntas__item">Duración viaje:</div>
           <div className="resumen__preguntas__item">Edad:</div>
         </div>
+
         <Form method="post" className="resumen__respuestas">
           {respuestas.map((respuesta, index) => (
             <div key={index} className="resumen__respuestas__item">
@@ -116,16 +237,25 @@ export default function Resultados() {
             </div>
           ))}
         </Form>
-        <div className="resumen__imagen">
-          <i className="fa-solid fa-plane-up slide-in-bottom vibrate-1"></i>
-        </div>
       </div>
+
+      {/* Elementos flotantes decorativos */}
+      <div className="elementos-flotantes">
+        <div className="elemento-flotante uno"></div>
+        <div className="elemento-flotante dos"></div>
+        <div className="elemento-flotante tres"></div>
+      </div>
+
       <div className="container__botones">
         <button type="button" onClick={volverAtras}>
-          Atrás
+          <i className="fa-solid fa-arrow-left"></i> Atrás
         </button>
-        <button type="button" onClick={enviarDestino}>
-          Confirmar
+        <button
+          type="button"
+          onClick={enviarDestino}
+          className="boton-confirmar"
+        >
+          <i className="fa-solid fa-paper-plane"></i> Confirmar
         </button>
       </div>
     </main>

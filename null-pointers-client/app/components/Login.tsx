@@ -1,14 +1,13 @@
 import React from "react";
 import { useNavigate } from "@remix-run/react";
 import { validateForm } from "~/utils/validations";
-import { LoginFormValues } from "~/interfaces/loginForm"; // Interfaz de formulario
+import { LoginFormValues } from "~/interfaces/loginForm";
 import "~/styles/login.css";
 import { authenticate } from "~/services/auth";
-import { useCheckbox } from "~/hooks/useCheckbox"; // Hook para manejar el checkbox
+import { useCheckbox } from "~/hooks/useCheckbox";
 
 export default function Login() {
   const navigate = useNavigate();
-
   const { checked: aceptado, handleChange: manejarCambio } = useCheckbox(false);
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
@@ -21,7 +20,6 @@ export default function Login() {
       aceptado,
     };
 
-    // Validación
     const error = validateForm(data.email, data.password, data.aceptado);
     if (error) {
       alert(error);
@@ -40,6 +38,7 @@ export default function Login() {
           })
         );
 
+        document.cookie = "token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
         document.cookie = `token=${user.token}; path=/; SameSite=Strict;`;
         console.log("Current cookies:", document.cookie);
 
@@ -58,61 +57,56 @@ export default function Login() {
   };
 
   return (
-    <div id="container2">
-      <div id="Registercon">
-        <img
-          src="/assets/img/registro.png"
-          id="imgrec"
-          className="imgrec"
-          alt="Imagen de registro"
+    <div id="container2" className="login-container">
+      <form id="formRegister" onSubmit={handleSubmit}>
+        <input
+          type="email"
+          id="email"
+          name="email"
+          placeholder="Introduce tu correo electrónico"
+          required
+          autoComplete="email"
+          className="input"
         />
-        <form id="formRegister" onSubmit={handleSubmit}>
+
+        <input
+          type="password"
+          id="password"
+          name="password"
+          placeholder="Introduce tu contraseña"
+          required
+          autoComplete="current-password"
+          className="input"
+        />
+        <label id="terms">
           <input
-            type="email"
-            id="email"
-            name="email"
-            placeholder="Introduce tu correo electrónico"
-            required
-            autoComplete="email"
+            type="checkbox"
+            id="checkboxTerms"
+            onChange={manejarCambio}
+            checked={aceptado}
           />
-          <input
-            type="password"
-            id="password"
-            name="password"
-            placeholder="Introduce tu contraseña"
-            required
-            autoComplete="current-password"
-          />
-          <label id="terms">
-            <input
-              type="checkbox"
-              id="checkboxTerms"
-              onChange={manejarCambio}
-              checked={aceptado}
-            />
-            Acepto los{" "}
-            <a
-              href="https://amadeus.com/es/politicas/privacy-policy"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              <strong>términos y condiciones</strong>
-            </a>
-            .
-          </label>
-          <button
-            type="submit"
-            className="sessionButton"
-            id="button"
-            disabled={!aceptado}
+          Acepto los{" "}
+          <a
+            href="https://amadeus.com/es/politicas/privacy-policy"
+            target="_blank"
+            rel="noopener noreferrer"
           >
-            Iniciar Sesión
-          </button>
-          <a href="/record" className="registerLink">
-            <strong>Registrarse</strong>
+            <strong>términos y condiciones</strong>
           </a>
-        </form>
-      </div>
+          .
+        </label>
+        <button
+          type="submit"
+          className="sessionButton"
+          id="button"
+          disabled={!aceptado}
+        >
+          Iniciar Sesión
+        </button>
+        <a href="/record" className="registerLink">
+          <strong>Registrarse</strong>
+        </a>
+      </form>
     </div>
   );
 }

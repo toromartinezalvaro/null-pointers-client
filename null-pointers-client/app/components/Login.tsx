@@ -6,7 +6,6 @@ import "~/styles/login.css";
 import { authenticate } from "~/services/auth";
 import { useCheckbox } from "~/hooks/useCheckbox"; // Hook para manejar el checkbox
 
-
 export default function Login() {
   const navigate = useNavigate();
 
@@ -34,7 +33,11 @@ export default function Login() {
       if (user) {
         sessionStorage.setItem(
           "userAuthData",
-          JSON.stringify({token: user.token, role: user.userType, email: data.email })
+          JSON.stringify({
+            token: user.token,
+            role: user.userType,
+            email: data.email,
+          })
         );
 
         document.cookie = `token=${user.token}; path=/; SameSite=Strict;`;
@@ -57,7 +60,12 @@ export default function Login() {
   return (
     <div id="container2">
       <div id="Registercon">
-        <img src="/assets/img/registro.png" id="imgrec" className="imgrec" alt="Imagen de registro" />
+        <img
+          src="/assets/img/registro.png"
+          id="imgrec"
+          className="imgrec"
+          alt="Imagen de registro"
+        />
         <form id="formRegister" onSubmit={handleSubmit}>
           <input
             type="email"
@@ -89,11 +97,20 @@ export default function Login() {
               rel="noopener noreferrer"
             >
               <strong>términos y condiciones</strong>
-            </a>.
+            </a>
+            .
           </label>
-          <button type="submit" className="sessionButton" id="button" disabled={!aceptado}>
+          <button
+            type="submit"
+            className="sessionButton"
+            id="button"
+            disabled={!aceptado}
+          >
             Iniciar Sesión
           </button>
+          <a href="/record" className="registerLink">
+            <strong>Registrarse</strong>
+          </a>
         </form>
       </div>
     </div>

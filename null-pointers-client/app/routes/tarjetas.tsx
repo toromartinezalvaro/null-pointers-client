@@ -37,7 +37,7 @@ export default function Tarjetas() {
     DEPORTES_Y_AVENTURAS: "Deportes y Aventuras",
     CULTURA_Y_MUSEOS: "Cultura y Museos",
     RELAX_Y_BIENESTAR: "Relax y Bienestar",
-    HOTEL_LUJO: "Hotel de Lujo",
+    HOTEL_LUJO: "Hotel de lujo",
     HOSTAL_ALBERGUE: "Hostal/Albergue",
     AIRBNB: "Airbnb",
     MENOR_UNA_SEMANA: "Menos de una semana",

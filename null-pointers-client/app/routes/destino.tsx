@@ -5,10 +5,8 @@ import { destinoService } from "../services/destinoService";
 
 /*logica para proteger vistas*/
 import { useAuth } from "~/hooks/useAuth";
-import { Navigate } from "@remix-run/react";
 
 export const links = () => {
-
   return [{ rel: "stylesheet", href: styles }];
 };
 
@@ -217,10 +215,12 @@ export default function Destino() {
   const [datosA, setDatosA] = useState<string[]>([]);
   const [datosE, setDatosE] = useState<string[]>([]);
   const [control] = useState(false);
-  
-
-  /*logica para proteger vistas*/
   const { authorized } = useAuth(["CLIENT", "ADMIN"]);
+
+
+  if (!authorized) {
+    navigate("login");
+  }
 
   useEffect(() => {
     const destinoA = destinoService.destinoA as DestinoKey;
@@ -251,10 +251,6 @@ export default function Destino() {
       setDatosE(["Emiratos Árabes Unidos", "Árabe", "Burj Khalifa", "Shawarma"]);
     }
   }, []);
-
-  if (!authorized) {
-    return <Navigate to="/login" replace />;
-  }
 
   return (
     <main className="container">

@@ -46,158 +46,45 @@ export default function Resultados() {
     return <Navigate to="/login" replace />;
   }
 
+  const enviarDestino = async () => {
+    const userAuthData = sessionStorage.getItem("userAuthData");
+    const parsedData = userAuthData ? JSON.parse(userAuthData) : null;
+    const email = parsedData.email;
 
-  const enviarDestino = () => {
-    // Recupera las respuestas desde sessionStorage
-    const respuestasGuardadas = sessionStorage.getItem("respuestas");
-    if (!respuestasGuardadas) {
-      console.error("No se encontraron respuestas en sessionStorage.");
-      return;
+    const body = {
+      nombre: "nombre",
+      email: email,
+      entorno: sessionStorage.getItem(`respuesta_0`),
+      clima: sessionStorage.getItem(`respuesta_1`),
+      actividad: sessionStorage.getItem(`respuesta_2`),
+      alojamiento: sessionStorage.getItem(`respuesta_3`),
+      tiempo_viaje: sessionStorage.getItem(`respuesta_4`),
+      rango_edad:sessionStorage.getItem(`respuesta_5`),
+    };
+
+    try {
+      const response = await fetch("http://localhost:8084/api/v1/preferencias", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(body),
+      });
+
+      if (!response.ok) {
+        throw new Error(`Error en la API: ${response.statusText}`);
+      }
+
+      const data = await response.json();
+
+      // Guardando los destinos en destinoService
+      destinoService.destinoA = data.destinoA;
+      destinoService.destinoE = data.destinoE;
+
+      navigate("/destino"); // Redirige a la página destino
+    } catch (error) {
+      console.error("Error en la solicitud:", error);
     }
-
-    const respuestas = JSON.parse(respuestasGuardadas);
-    console.log("Respuestas procesadas:", respuestas);
-
-    let destinoA = "";
-    let destinoE = "";
-
-    const [pDestino, pClimatica, pActividad, pAlojamiento, dViaje, edad] =
-      respuestas;
-
-    switch (pDestino) {
-      case "Playa":
-        switch (pClimatica) {
-          case "Caluroso":
-            if (dViaje === "1-2 semanas") {
-              if (
-                edad === "Menos de 30 años" &&
-                pActividad === "Deportes y Aventuras" &&
-                pAlojamiento === "Hostal o Albergue"
-              ) {
-                destinoA = "Tulum";
-                destinoE = "Ibiza";
-              } else if (
-                edad === "Menos de 30 años" &&
-                pActividad === "Relax y Bienestar" &&
-                pAlojamiento === "Hotel de Lujo"
-              ) {
-                destinoA = "Playa del Carmen";
-                destinoE = "Santorini";
-              } else if (
-                edad === "30-50 años" &&
-                pActividad === "Cultura y Museos" &&
-                pAlojamiento === "Hotel de Lujo"
-              ) {
-                destinoA = "Honolulu";
-                destinoE = "Malta";
-              }
-            }
-            break;
-          case "Templado":
-            if (dViaje === "1-2 semanas") {
-              if (
-                edad === "Menos de 30 años" &&
-                pActividad === "Cultura y Museos" &&
-                pAlojamiento === "Hostal o Albergue"
-              ) {
-                destinoA = "San Juan";
-                destinoE = "Niza";
-              } else if (
-                edad === "30-50 años" &&
-                pActividad === "Cultura y Museos" &&
-                pAlojamiento === "Hotel de Lujo"
-              ) {
-                destinoA = "Río de Janeiro";
-                destinoE = "Lisboa";
-              }
-            }
-            break;
-        }
-        break;
-      case "Montaña":
-        switch (pClimatica) {
-          case "Frío":
-            if (dViaje === "1-2 semanas") {
-              if (edad === "Más de 50 años" && pAlojamiento === "Airbnb") {
-                if (pActividad === "Cultura y Museos") {
-                  destinoA = "Ushuaia";
-                  destinoE = "Reykjavik";
-                } else if (pActividad === "Relax y Bienestar") {
-                  destinoA = "Aspen";
-                  destinoE = "Innsbruck";
-                }
-              }
-            }
-            break;
-          case "Templado":
-            if (
-              edad === "Más de 50 años" &&
-              pAlojamiento === "Airbnb" &&
-              pActividad === "Cultura y Museos" &&
-              dViaje === "1-2 semanas"
-            ) {
-              destinoA = "Cusco";
-              destinoE = "Granada";
-            }
-            break;
-        }
-        break;
-      case "Ciudad":
-        switch (pClimatica) {
-          case "Caluroso":
-            if (
-              edad === "Más de 50 años" &&
-              pAlojamiento === "Hotel de Lujo" &&
-              pActividad === "Cultura y Museos" &&
-              dViaje === "1-2 semanas"
-            ) {
-              destinoA = "Los Angeles";
-              destinoE = "Roma";
-            }
-            break;
-          case "Frío":
-            if (
-              edad === "30-50 años" &&
-              pAlojamiento === "Hotel de Lujo" &&
-              pActividad === "Cultura y Museos" &&
-              dViaje === "1-2 semanas"
-            ) {
-              destinoA = "Toronto";
-              destinoE = "Berlín";
-            }
-            break;
-          case "Templado":
-            if (dViaje === "1-2 semanas" && pActividad === "Cultura y Museos") {
-              if (
-                edad === "30-50 años" &&
-                pAlojamiento === "Hostal o Albergue"
-              ) {
-                destinoA = "Ciudad de México";
-                destinoE = "Madrid";
-              } else if (
-                edad === "Más de 50 años" &&
-                pAlojamiento === "Hotel de Lujo"
-              ) {
-                destinoA = "Nueva York";
-                destinoE = "París";
-              }
-            }
-            break;
-        }
-        break;
-    }
-
-    if (destinoA === "") {
-      destinoA = "Bora Bora";
-      destinoE = "Dubái";
-    }
-
-    //Guardando los destinos en destinoService
-    destinoService.destinoA = destinoA;
-    destinoService.destinoE = destinoE;
-
-    console.log(`Destino América: ${destinoA}, Destino Europa: ${destinoE}`);
-    navigate("/destino"); //Redirige a la página destino
   };
 
   const volverAtras = () => {

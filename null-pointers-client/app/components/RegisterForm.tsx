@@ -111,9 +111,6 @@ const RegisterForm: React.FC = () => {
         <button className="registerButton" id="button" type="submit" disabled={!isCheckboxChecked}>
           Registrarse
         </button>
-        <a className="registradoButton" id="termss" href="/login" rel="noopener noreferrer">
-          <strong>Ya estoy Registrado</strong>
-        </a>
       </form>
       {successMessage && (
         <div id="mensaje-exito">

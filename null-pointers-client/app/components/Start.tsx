@@ -7,7 +7,7 @@ interface StartProps {
 export default function Start({ imageSrc }: StartProps) {
   return (
     <div id="container" className="container">
-      <Link to="/record">
+      <Link to="/login">
         <img
           id="imagenInicio"
           src={imageSrc}

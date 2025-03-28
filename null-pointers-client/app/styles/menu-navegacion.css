@@ -1,8 +1,8 @@
 :root {
-  --color-primario: #ffffff; /* Fondo blanco */
-  --color-texto: #333333; /* Texto oscuro para contraste */
-  --color-acento: #4a90e2; /* Azul para detalles */
-  --color-hover: #ff6f61; /* Color vibrante para el hover */
+  --color-primario: #ffffff;
+  --color-texto: #222222;
+  --color-acento: #4a90e2;
+  --color-hover: #0090a5;
   --fuente-primaria: 'Helvetica Neue', Arial, sans-serif;
   --transicion-rapida: 0.3s ease;
 }
@@ -11,7 +11,6 @@ body {
   font-family: var(--fuente-primaria);
   margin: 0;
   padding: 0;
-  background-color: var(--color-primario);
 }
 
 .nav {
@@ -19,14 +18,27 @@ body {
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
-  background-color: var(--color-primario);
+  background:
+    linear-gradient(rgba(255, 255, 255, 0.85), rgba(255, 255, 255, 0.85)),
+    url('https://i.pinimg.com/originals/72/b3/6d/72b36ddca2bd379f7850f6f325ad0166.jpg');
+  background-size: cover;
+  background-position: center;
+  backdrop-filter: blur(20px);
   color: var(--color-texto);
   padding: 10px 20px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Sombra ligera */
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.3);
   z-index: 1000;
   height: 6vh;
   width: 100%;
   position: fixed;
+}
+
+
+.nav-logo-container {
+  display:flex;
+  align-items: center;
+  height: 100%;
+  padding:0;
 }
 
 .nav__logo {
@@ -60,18 +72,16 @@ body {
 .nav__lista li a {
   text-decoration: none;
   color: var(--color-texto);
-  font-size: 1rem;
+  font-size: 1.5rem;
   font-weight: bold;
-  padding: 8px 15px;
-  border: 2px solid transparent;
-  border-radius: 20px;
-  transition: background-color var(--transicion-rapida), color var(--transicion-rapida), border-color var(--transicion-rapida);
+  padding: 8px 25px;
+  display: inline-block;
+  transition: color var(--transicion-rapida), transform var(--transicion-rapida);
 }
 
 .nav__lista li a:hover {
-  background-color: var(--color-hover);
-  color: var(--color-primario);
-  border-color: var(--color-hover);
+  color: var(--color-hover);
+  transform: scale(1.1);
 }
 
 @media screen and (max-width: 730px) {

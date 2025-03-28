@@ -12,7 +12,7 @@ export default function MenuNavegacion() {
         <div className="nav__container">
           <ul className="nav__lista">
             <li>
-              <a href="../index">Inicio</a>
+              <a href="/">Inicio</a>
             </li>
             <li>
               <a href="https://amadeus.com/es/contacto" target="_blank" rel="noreferrer">

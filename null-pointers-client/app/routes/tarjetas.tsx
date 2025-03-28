@@ -42,7 +42,7 @@ export default function Tarjetas() {
   }
 
   return (
-    <main className="flex flex-col items-center justify-center min-h-screen text-white  bg">
+    <main className="flex flex-col items-center justify-center text-white  fondo">
       <div className="text-center mb-6">
         <h1 className="text-3xl font-bold animate-fadeIn">
           {preguntas[indice]}

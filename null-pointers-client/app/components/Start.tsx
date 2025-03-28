@@ -1,16 +1,13 @@
 import { Link } from "@remix-run/react";
 import "~/styles/start.css";
-interface StartProps {
-  imageSrc: string; // Propiedad requerida para recibir la imagen
-}
 
-export default function Start({ imageSrc }: StartProps) {
+export default function Start() {
   return (
     <div id="container" className="container">
       <Link to="/login">
         <img
           id="imagenInicio"
-          src={imageSrc}
+          src={"/assets/img/image1.png"}
           alt="Imagen de ejemplo"
           className="image"
         />

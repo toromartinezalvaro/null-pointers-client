@@ -54,13 +54,14 @@ const RegisterForm: React.FC = () => {
 
   return (
     <div id="Registercon">
-      <form id="formRegister" onSubmit={handleSubmit}>
+      <form id="formRegister" className="form-container" onSubmit={handleSubmit}>
         <input
           type="email"
           id="email"
           name="email"
           placeholder="Enter your email"
           required
+          className="input"
         />
         <input
           type="text"
@@ -68,6 +69,7 @@ const RegisterForm: React.FC = () => {
           name="nombre"
           placeholder="Enter your name"
           required
+          className="input"
         />
         <input
           type="password"
@@ -75,11 +77,11 @@ const RegisterForm: React.FC = () => {
           name="password"
           placeholder="Enter your password"
           required
+          className="input"
         />
 
         {/* Selección de Rol con etiqueta dentro del campo */}
         <select
-          className="role-select"
           value={selectedRole}
           onChange={handleRoleChange}
           required

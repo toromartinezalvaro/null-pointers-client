@@ -1,13 +1,37 @@
 import { json, LoaderFunction } from "@remix-run/node";
+import { fetchDestinationData } from "~/services/destinationService";
 
-const API_URL = "http://localhost:5220/api/Destinos";
-
-export const loader: LoaderFunction = async () => {
+export const loader: LoaderFunction = async ({ request }) => {
   try {
-    const response = await fetch(API_URL);
-    if (!response.ok) throw new Error("Failed to fetch destinations");
-    const data = await response.json();
-    return json(data);
+    const cookieHeader = request.headers.get("Cookie");
+    if (!cookieHeader) {
+      return new Response(
+        JSON.stringify({ error: "Unauthorized - No cookies found" }),
+        {
+          status: 401,
+          headers: { "Content-Type": "application/json" },
+        }
+      );
+    }
+
+    const tokenMatch = cookieHeader.match(/token=([^;]+)/);
+    const token = tokenMatch ? tokenMatch[1] : null;
+
+    if (!token) {
+      return new Response(
+        JSON.stringify({ error: "Unauthorized - Token not found" }),
+        {
+          status: 401,
+          headers: { "Content-Type": "application/json" },
+        }
+      );
+    }
+
+    const response = await fetchDestinationData(token);
+    return new Response(JSON.stringify(response), {
+      status: 200,
+      headers: { "Content-Type": "application/json" },
+    });
   } catch (error) {
     console.error("Error fetching data:", error);
     return json([]);

@@ -75,7 +75,10 @@ export default function Destino() {
             </div>
 
             <div className="opcion__link__item">
-              <button onClick={() => navigate("/plans")}>
+              <button onClick={() => {
+                sessionStorage.setItem("selectedDestination", JSON.stringify(destino));
+                navigate("/plans")
+              }}>
                 <img src="/imagenes/paquete.png" alt="Explora tus opciones" />
               </button>
               <span className="tooltiptext">Explora tus opciones</span>

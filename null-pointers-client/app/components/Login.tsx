@@ -85,15 +85,14 @@ export default function Login() {
             onChange={manejarCambio}
             checked={aceptado}
           />
-          Acepto los{" "}
+          {` Acepto los `}
           <a
             href="https://amadeus.com/es/politicas/privacy-policy"
             target="_blank"
             rel="noopener noreferrer"
           >
-            <strong>términos y condiciones</strong>
+            <strong>términos y condiciones.</strong>
           </a>
-          .
         </label>
         <button
           type="submit"
@@ -103,9 +102,13 @@ export default function Login() {
         >
           Iniciar Sesión
         </button>
+
+        <div className="registerLinkContainer">
+        <span>¿Aún no tienes cuenta?</span>
         <a href="/record" className="registerLink">
           <strong>Registrarse</strong>
         </a>
+        </div>
       </form>
     </div>
   );

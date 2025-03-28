@@ -1,7 +1,9 @@
 import { Link } from "@remix-run/react";
-import { PlansProps } from "../interfaces/plans";
+import { useSelectedDestination } from "~/hooks/useSelectedDestination";
 
-export default function Plans({ destino, srcA }: PlansProps) {
+export default function Plans() {
+  const selectedDestination = useSelectedDestination();
+
   return (
     <div className="container">
       <div className="conteiner__encabezado">
@@ -13,20 +15,22 @@ export default function Plans({ destino, srcA }: PlansProps) {
         </div>
 
         <h1 className="conteiner__encabezado__titulo">Destino seleccionado:</h1>
-        <div className="conteiner__encabezado__imagen">
-          <img src={srcA} alt="Imagen del destino" />
-        </div>
-        <h2 className="conteiner__encabezado__nombre">{destino}</h2>
+
+        {selectedDestination ? (
+          <>
+            <div className="conteiner__encabezado__imagen">
+              <img src={selectedDestination.imgUrl} alt="Imagen del destino" />
+            </div>
+            <h2 className="conteiner__encabezado__nombre">{selectedDestination.nombre}</h2>
+          </>
+        ) : (
+          <p>Cargando destino...</p>
+        )}
       </div>
 
       <div className="container__hospedaje">
         <h2>Tus opciones de hospedaje:</h2>
-        <div>
-          <p>
-            Estas son las opciones de hospedaje que te recomendamos según tus
-            preferencias:
-          </p>
-        </div>
+        <p>Estas son las opciones de hospedaje que te recomendamos según tus preferencias:</p>
 
         <div className="container__hospedaje__opciones">
           <div className="container__hospedaje__opcion">
@@ -53,12 +57,7 @@ export default function Plans({ destino, srcA }: PlansProps) {
 
       <div className="container__vuelos">
         <h2>Tus opciones de vuelos:</h2>
-        <div className="vuelo-container">
-          <p className="txt-parrafo">
-            Estos son las dos opciones de vuelos que te recomendamos según tus
-            preferencias:
-          </p>
-        </div>
+        <p>Estos son las dos opciones de vuelos que te recomendamos según tus preferencias:</p>
 
         <div className="container__vuelos__opciones">
           <div className="container__vuelos__opcion">
@@ -73,10 +72,9 @@ export default function Plans({ destino, srcA }: PlansProps) {
             </div>
             <div className="container__hospedaje__opcion__info">
               <h3>Avianca</h3>
-              <p className="txt-parrafo">
+              <p>
                 Avianca, una aerolínea Colombiana de categoría premium, con más
-                de 104 años de trayectoria, volando a más de 104 destinos, con
-                &quot;Avianca el cielo es de todos&quot;.
+                de 104 años de trayectoria, volando a más de 104 destinos.
               </p>
             </div>
           </div>

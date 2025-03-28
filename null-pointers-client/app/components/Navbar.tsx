@@ -1,23 +1,32 @@
-import "~/styles/menu-navegacion.css";
+import {
+  navbarClasses,
+  logoContainerClasses,
+  logoClasses,
+  navContainerClasses,
+  navListClasses,
+  navItemClasses,
+  mobileNavClasses,
+} from "~/styles/navbarStyles";
 
 export default function Navbar() {
   return (
-    <header >
-      <nav className="nav">
-        <a className="nav-logo-container" href="/">
+    <header>
+      <nav className={`${navbarClasses} sm:${mobileNavClasses}`}>
+        <a className={logoContainerClasses} href="/">
           <img
-            className="nav__logo"
+            className={logoClasses}
             src="/imagenes/amadeus-logo-dark-sky.png"
             alt="logo"
           />
         </a>
-        <div className="nav__container">
-          <ul className="nav__lista">
+        <div className={navContainerClasses}>
+          <ul className={navListClasses}>
             <li>
-              <a href="/">Inicio</a>
+              <a className={navItemClasses} href="/">Inicio</a>
             </li>
             <li>
               <a
+                className={navItemClasses}
                 href="https://amadeus.com/es/contacto"
                 target="_blank"
                 rel="noreferrer"
@@ -26,10 +35,15 @@ export default function Navbar() {
               </a>
             </li>
             <li>
-              <a href="/reports/destinations">Reporte</a>
+              <a className={navItemClasses} href="/reports/destinations">Reporte</a>
             </li>
             <li>
-              <a href="https://amadeus.com/en" target="_blank" rel="noreferrer">
+              <a
+                className={navItemClasses}
+                href="https://amadeus.com/en"
+                target="_blank"
+                rel="noreferrer"
+              >
                 Amadeus
               </a>
             </li>

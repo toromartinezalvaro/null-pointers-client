@@ -1,10 +1,6 @@
 import { useNavigate } from "@remix-run/react";
-import styles from "~/styles/destino.css?url";
+import "~/styles/destino.css";
 import { useAuth } from "~/hooks/useAuth";
-
-export const links = () => {
-  return [{ rel: "stylesheet", href: styles }];
-};
 
 interface Destino {
   id: number;

@@ -3,7 +3,6 @@ import { useState } from "react";
 import type { LoaderFunction } from "@remix-run/node";
 import { json, Link, useNavigate, Navigate } from "@remix-run/react";
 import styles from "~/styles/tarjetas.css?url";
-import { useDestino } from "../context/destinoService";
 import { useAuth } from "~/hooks/useAuth";
 
 export const links = () => [{ rel: "stylesheet", href: styles }];
@@ -16,7 +15,8 @@ export default function Tarjetas() {
   const { authorized, reason } = useAuth(["CLIENT", "ADMIN"]);
 
   const navigate = useNavigate(); //navegar entre rutas
-  const { indice, setIndice, respuestasSer, setRespuestasSer } = useDestino(); //indice de la pregunta
+  const [indice, setIndice] = useState<number>(0); //indice de la pregunta
+  const [respuestasSer, setRespuestasSer] = useState<string[]>([]);
   const [opcSelect, setOpcSelect] = useState(""); //opción seleccionada
   const [disSig, setDisSig] = useState(true); //ocultar siguiente
   const [disAtras, setDisAtras] = useState(true); //ocultar atras

@@ -6,9 +6,7 @@ import {
   Scripts,
   ScrollRestoration,
 } from "@remix-run/react";
-
 import appStylesHref from "./app.css?url";
-import { DestinoProvider } from "./context/destinoService";
 import MenuNavegacion from "./routes/menu-navegacion";
 
 export const links: LinksFunction = () => [
@@ -37,14 +35,12 @@ export default function App() {
         <Links />
       </head>
       <body>
-        <DestinoProvider>
           <MenuNavegacion />
           <div id="detail">
             <Outlet />
           </div>
           <ScrollRestoration />
           <Scripts />
-        </DestinoProvider>
       </body>
     </html>
   );

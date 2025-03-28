@@ -1,10 +1,9 @@
 import Plans from "../components/Plans";
-import styles from "~/styles/plans.css?url";
-
-export function links() {
-  return [{ rel: "stylesheet", href: styles }];
-}
 
 export default function PlansRoute() {
-  return <Plans/>;
+  return (
+    <div className="w-full bg-[#f8f9fc]">
+      <Plans/>
+    </div>
+  );
 }

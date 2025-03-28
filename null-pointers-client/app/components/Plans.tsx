@@ -1,40 +1,41 @@
 import { Link } from "@remix-run/react";
 import { useSelectedDestination } from "~/hooks/useSelectedDestination";
+import "~/styles/plans.css";
 
 export default function Plans() {
   const selectedDestination = useSelectedDestination();
 
   return (
-    <div className="container">
-      <div className="conteiner__encabezado">
-        <div className="opcion__link__item">
+    <div className="plans-container">
+      <div className="plans-conteiner__encabezado">
+        <div className="plans-opcion__link__item">
           <Link to="/destino">
             <i className="fa-solid fa-arrow-left"></i>
           </Link>
-          <span className="tooltiptext">Volver a tus destinos</span>
+          <span className="plans-tooltiptext">Volver a tus destinos</span>
         </div>
 
-        <h1 className="conteiner__encabezado__titulo">Destino seleccionado:</h1>
+        <h1 className="plans-conteiner__encabezado__titulo">Destino seleccionado:</h1>
 
         {selectedDestination ? (
           <>
-            <div className="conteiner__encabezado__imagen">
+            <div className="plans-conteiner__encabezado__imagen">
               <img src={selectedDestination.imgUrl} alt="Imagen del destino" />
             </div>
-            <h2 className="conteiner__encabezado__nombre">{selectedDestination.nombre}</h2>
+            <h2 className="plans-conteiner__encabezado__nombre">{selectedDestination.nombre}</h2>
           </>
         ) : (
           <p>Cargando destino...</p>
         )}
       </div>
 
-      <div className="container__hospedaje">
+      <div className="plans-container__hospedaje">
         <h2>Tus opciones de hospedaje:</h2>
         <p>Estas son las opciones de hospedaje que te recomendamos según tus preferencias:</p>
 
-        <div className="container__hospedaje__opciones">
-          <div className="container__hospedaje__opcion">
-            <div className="container__hospedaje__opcion__img">
+        <div className="plans-container__hospedaje__opciones">
+          <div className="plans-container__hospedaje__opcion">
+            <div className="plans-container__hospedaje__opcion__img">
               <a
                 href="https://www.palladiumhotelgroup.com/es/hoteles/mexico/costamujerescancun/trs-coral-hotel"
                 target="_blank"
@@ -43,7 +44,7 @@ export default function Plans() {
                 <img src="/imagenes/trs-cancun.jpg" alt="TRS Coral Hotel" />
               </a>
             </div>
-            <div className="container__hospedaje__opcion__info">
+            <div className="plans-container__hospedaje__opcion__info">
               <h3>TRS Coral Hotel</h3>
               <p>
                 Se sitúa en Cancún, playa del Carmen, cuenta con zona privada de
@@ -55,13 +56,13 @@ export default function Plans() {
         </div>
       </div>
 
-      <div className="container__vuelos">
+      <div className="plans-container__vuelos">
         <h2>Tus opciones de vuelos:</h2>
         <p>Estos son las dos opciones de vuelos que te recomendamos según tus preferencias:</p>
 
-        <div className="container__vuelos__opciones">
-          <div className="container__vuelos__opcion">
-            <div className="container__hospedaje__opcion__img">
+        <div className="plans-container__vuelos__opciones">
+          <div className="plans-container__vuelos__opcion">
+            <div className="plans-container__hospedaje__opcion__img">
               <a
                 href="https://www.avianca.com/es/"
                 target="_blank"
@@ -70,7 +71,7 @@ export default function Plans() {
                 <img src="/imagenes/avion-avianca.jpg" alt="Avianca" />
               </a>
             </div>
-            <div className="container__hospedaje__opcion__info">
+            <div className="plans-container__hospedaje__opcion__info">
               <h3>Avianca</h3>
               <p>
                 Avianca, una aerolínea Colombiana de categoría premium, con más

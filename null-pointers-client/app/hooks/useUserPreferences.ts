@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { fetchUserPreferences } from "../services/userService";
+import { getTokenFromCookiesClient } from "~/utils/cookieUtils";
 
 interface Destination {
   nombre: string;
@@ -27,7 +28,14 @@ export function useUserPreferences() {
     setCargando((prev) => ({ ...prev, [email]: true }));
 
     try {
-      const preferencias = await fetchUserPreferences(email);
+    const token = getTokenFromCookiesClient()
+
+    if (!token) {
+      console.error("Token is required but was not provided");
+      return [];
+    }
+
+      const preferencias = await fetchUserPreferences(email, token);
       setPreferenciasUsuario((prev) => ({
         ...prev,
         [email]: preferencias || [],

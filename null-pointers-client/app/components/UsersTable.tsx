@@ -25,6 +25,11 @@ export default function UsersTable({
   loadPreferenciasUsuario,
   cargando,
 }: UsersTableProps) {
+
+  if (!usuariosData || usuariosData.length === 0) {
+    return <div>No users found.</div>;
+  }
+
   return (
     <div className="table-container">
       <table className="table">

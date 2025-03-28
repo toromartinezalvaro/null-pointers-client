@@ -1,5 +1,6 @@
 import { json, LoaderFunction } from "@remix-run/node";
 import { fetchDestinationData } from "~/services/destinationService";
+import { getTokenFromCookiesServer } from "~/utils/cookieUtils";
 
 export const loader: LoaderFunction = async ({ request }) => {
   try {
@@ -14,18 +15,12 @@ export const loader: LoaderFunction = async ({ request }) => {
       );
     }
 
-    const tokenMatch = cookieHeader.match(/token=([^;]+)/);
-    const token = tokenMatch ? tokenMatch[1] : null;
+    const token = getTokenFromCookiesServer(request)
 
-    if (!token) {
-      return new Response(
-        JSON.stringify({ error: "Unauthorized - Token not found" }),
-        {
-          status: 401,
-          headers: { "Content-Type": "application/json" },
+        if (!token) {
+          console.error("Token is required but was not provided");
+          return [];
         }
-      );
-    }
 
     const response = await fetchDestinationData(token);
     return new Response(JSON.stringify(response), {

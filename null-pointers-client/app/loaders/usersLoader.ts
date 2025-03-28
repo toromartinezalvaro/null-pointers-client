@@ -1,14 +1,31 @@
-import { User } from "~/interfaces/user";
+import { json, LoaderFunction } from "@remix-run/node";
+import { fetchAllUsersData } from "~/services/userService";
+import { getTokenFromCookiesServer } from "~/utils/cookieUtils";
 
-export async function usersLoader(): Promise<User[]> {
+export const usersLoader: LoaderFunction = async ({ request }) => {
   try {
-    const response = await fetch("http://localhost:5220/api/usuarios");
-    if (!response.ok) throw new Error("Error fetching users");
+    const token = getTokenFromCookiesServer(request)
 
-    const users: User[] = await response.json();
-    return users;
+    if (!token) {
+      console.error("Token is required but was not provided");
+      return [];
+    }
+
+    const response = await fetchAllUsersData(token);
+
+    if (!Array.isArray(response)) {
+      return new Response(
+        JSON.stringify({ error: "Data format is invalid" }),
+        { status: 500, headers: { "Content-Type": "application/json" } }
+      );
+    }
+
+    return new Response(JSON.stringify(response), {
+      status: 200,
+      headers: { "Content-Type": "application/json" },
+    });
   } catch (error) {
-    console.error("Error fetching users:", error);
-    return [];
+    console.error("Error fetching data:", error);
+    return json([]);
   }
-}
+};

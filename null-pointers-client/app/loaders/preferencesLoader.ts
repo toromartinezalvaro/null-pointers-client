@@ -1,29 +1,16 @@
 import { LoaderFunction } from "@remix-run/node";
 import { fetchPreferencesData } from "~/services/preferenceService";
+import { getTokenFromCookiesServer } from "~/utils/cookieUtils";
 
 export const preferencesLoader: LoaderFunction = async ({ request }) => {
   try {
-    // Get cookies from the request
-    const cookieHeader = request.headers.get("Cookie");
-    if (!cookieHeader) {
-      return new Response(JSON.stringify({ error: "Unauthorized - No cookies found" }), {
-        status: 401,
-        headers: { "Content-Type": "application/json" },
-      });
-    }
-
-    // Extract the token manually
-    const tokenMatch = cookieHeader.match(/token=([^;]+)/);
-    const token = tokenMatch ? tokenMatch[1] : null;
+    const token = getTokenFromCookiesServer(request);
 
     if (!token) {
-      return new Response(JSON.stringify({ error: "Unauthorized - Token not found" }), {
-        status: 401,
-        headers: { "Content-Type": "application/json" },
-      });
+      console.error("Token is required but was not provided");
+      return [];
     }
 
-    // Fetch preferences using the token
     const preferencesData = await fetchPreferencesData(token);
     return new Response(JSON.stringify(preferencesData), {
       status: 200,

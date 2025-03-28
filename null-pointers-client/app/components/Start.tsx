@@ -3,26 +3,18 @@ import "~/styles/start.css";
 
 export default function Start() {
   return (
-    <div id="container" className="container">
-      <Link to="/login">
-        <img
-          id="imagenInicio"
-          src={"/assets/img/image1.png"}
-          alt="Imagen de ejemplo"
-          className="image"
-        />
+    <div className="start-container">
+      <div className="overlay"></div>
+      <div className="content">
+        <h1 className="title">Tu próximo destino te espera</h1>
+        <p className="subtitle">
+          Descubre experiencias únicas y personaliza tu viaje sin complicaciones.
+        </p>
 
-        {/* Contenido de texto (Información) */}
-        <div id="texto" className="nosotros">
-          <h1>Información</h1>
-          <p>
-            ¿Estás cansado de pasar horas buscando el destino perfecto para tu
-            próximo viaje? ¿Te gustaría crear un viaje de acuerdo a tus
-            preferencias y sin complicaciones? <br /> <br />
-            <strong>¡Dale click a la imagen y prepárate para viajar!</strong>
-          </p>
-        </div>
-      </Link>
+        <Link to="/login" className="cta-button">
+          ¡Empieza tu aventura!
+        </Link>
+      </div>
     </div>
   );
 }

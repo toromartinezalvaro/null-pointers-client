@@ -1,10 +1,8 @@
 import Start from "~/components/Start";
-import "~/styles/start.css";
 
 export default function Index() {
-
   return (
-    <div className="start">
+    <div>
       <Start />
     </div>
   );

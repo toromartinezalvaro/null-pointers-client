@@ -7,38 +7,31 @@
   gap: 20px;
   background: #000835;
   position: relative;
+  background: linear-gradient(to bottom right, #000322, #000835, #001140);
+  background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 3, 34, 0.8)),
+              url('/assets/img/amadeusImage.png');
+  background-size: cover;
+  background-position: center;
 }
 
-.imgrec {
-  width: 40%;
-  height: 56%;
-  border-radius: 15px;
-  opacity: 1;
-}
-
-.imgrec:hover {
-  opacity: 0.3;
-}
-
-#Registercon {
-  width: 40%;
-  height: 70%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center; /* Centrar contenido */
-  background: #000835;
-}
-
-#formRegister {
-  width: 100%;
-  height: 100%;
+.form-container {
+  width: 70vw;
+  height: 55vh;
+  max-width: 500px;
+  max-height: 550px;
   display: flex;
   justify-content: center;
-  align-items: center; /* Centrar elementos */
+  align-items: center;
   flex-direction: column;
-  gap: 25px;
-  /* margin-right: 5%; */
+  gap: 35px;
+  border: 2px solid #00d4ff;
+  border-radius: 25px;
+  background: transparent;
+  border: 2px solid rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(20px);
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+  color: #fff;
+  border-radius: 10px;
 }
 
 #email,
@@ -121,3 +114,103 @@ strong {
   justify-content: center;
   border-radius: 15px;
 }
+
+.input {
+  width: 70%;
+  padding: 14px;
+  font-size: 18px;
+  border: 2px solid rgba(255, 255, 255, 0.2);
+  background: rgba(255, 255, 255, 0.1);
+  color: white;
+  border-radius: 10px;
+  outline: none;
+  transition: all 0.3s ease-in-out;
+  box-shadow: inset 0 0 5px rgba(255, 255, 255, 0.1);
+  text-align: center;
+  appearance: none;
+}
+
+.input::placeholder {
+  color: rgba(255, 255, 255, 0.5);
+  transition: color 0.3s ease-in-out;
+}
+
+.input:hover {
+  border-color: rgba(255, 255, 255, 0.5);
+}
+
+.input:focus {
+  border: 2px solid #00d4ff;
+  box-shadow: 0 0 15px #00d4ff;
+}
+
+.input:focus::placeholder {
+  color: rgba(255, 255, 255, 0);
+}
+
+.input:-webkit-autofill,
+.input:-webkit-autofill:hover,
+.input:-webkit-autofill:focus,
+.input:-webkit-autofill:active {
+  background: rgba(255, 255, 255, 0.1) !important;
+  color: white !important;
+  -webkit-text-fill-color: white !important;
+  border: 1px solid rgba(255, 255, 255, 0.3) !important;
+  transition: background-color 5000s ease-in-out 0s;
+}
+
+select {
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  width: 70%;
+  padding: 14px;
+  font-size: 18px;
+  border: 2px solid rgba(255, 255, 255, 0.2);
+  background: rgba(255, 255, 255, 0.1);
+  color: white;
+  border-radius: 10px;
+  outline: none;
+  transition: all 0.3s ease-in-out;
+  box-shadow: inset 0 0 5px rgba(255, 255, 255, 0.1);
+  text-align: center;
+  cursor: pointer;
+}
+
+select:hover {
+  border-color: rgba(255, 255, 255, 0.5);
+}
+
+select:focus {
+  border: 2px solid #00d4ff;
+  box-shadow: 0 0 15px #00d4ff;
+}
+
+select::-ms-expand {
+  display: none;
+}
+
+.select-container {
+  position: relative;
+  display: inline-block;
+  width: 70%;
+}
+
+.select-container select {
+  width: 100%;
+}
+
+select option {
+  background: rgba(12, 102, 225, 0.9);
+  background: rgba(50, 50, 70, 0.5);
+  color: white;
+  padding: 10px;
+  box-shadow: inset 0 0 5px rgba(255, 255, 255, 0.1);
+}
+
+select option:hover,
+select option:checked {
+  background: rgba(255, 255, 255, 0.3);
+}
+
+

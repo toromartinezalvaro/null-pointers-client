@@ -1,14 +1,12 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom"; // Para redirigir al login
 import "~/styles/record.css";
-import { registerUser } from "../services/recordService"; // Verifica esta ruta
-import { UserRecord } from "~/interfaces/UserRecord"; // Importa la interfaz de datos
+import { registerUser } from "../services/recordService";
+import { UserRecord } from "~/interfaces/UserRecord";
 
 const RegisterForm: React.FC = () => {
-  const [isCheckboxChecked, setIsCheckboxChecked] = useState(false); // Estado del checkbox
+  const [isCheckboxChecked, setIsCheckboxChecked] = useState(false);
   const [successMessage, setSuccessMessage] = useState(false); // Estado del mensaje de éxito
   const [selectedRole, setSelectedRole] = useState<string>(""); // Estado para el rol seleccionado
-  const navigate = useNavigate(); // Hook para redirigir al login
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -35,7 +33,7 @@ const RegisterForm: React.FC = () => {
       setSuccessMessage(true); // Mostrar mensaje de éxito
 
       setTimeout(() => {
-        navigate("/login"); // Redirigir al login
+        window.location.href = "/login"; // Redirigir al login
         setSuccessMessage(false); // Ocultar mensaje después de redirigir
       }, 3000);
     } catch (error) {
@@ -81,11 +79,7 @@ const RegisterForm: React.FC = () => {
         />
 
         {/* Selección de Rol con etiqueta dentro del campo */}
-        <select
-          value={selectedRole}
-          onChange={handleRoleChange}
-          required
-        >
+        <select value={selectedRole} onChange={handleRoleChange} required>
           <option value="" disabled>
             Selecciona tu rol:{" "}
           </option>

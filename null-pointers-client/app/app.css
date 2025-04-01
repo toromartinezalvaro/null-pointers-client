@@ -4,7 +4,13 @@
 
 html {
   box-sizing: border-box;
+  scrollbar-width: none;
 }
+
+html::-webkit-scrollbar {
+  display: none;
+}
+
 *,
 *:before,
 *:after {

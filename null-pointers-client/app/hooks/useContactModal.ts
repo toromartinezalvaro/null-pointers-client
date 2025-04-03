@@ -141,7 +141,7 @@ export function useContactModal(isOpen: boolean, user: User | null) {
           Hemos notado tu interés en los siguientes destinos:
         </p>
         
-        <div style="display: flex; flex-wrap: wrap; gap: 10px; margin: 20px 0;">
+        <div style="display: flex; flex-wrap: wrap; gap: 50px; margin: 20px 0; ">
       `;
       
       // Añadir imágenes de destinos en HTML
@@ -167,7 +167,7 @@ export function useContactModal(isOpen: boolean, user: User | null) {
                 style="width: 100%; height: 100%; object-fit: cover;"
               />
             </div>
-            <div style="padding: 10px; background-color: #f8f9fa;">
+            <div style="padding: 10px; background-color: #f8f9fa; height: 100%;">
               <h3 style="margin: 0 0 5px 0; font-size: 14px; color: #333;">${nombreDestino}</h3>
               <p style="margin: 0; font-size: 12px; color: #666;">${continenteNombre}</p>
             </div>

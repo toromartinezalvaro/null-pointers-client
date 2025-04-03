@@ -1,4 +1,4 @@
-import { Form, useNavigate, Navigate } from "@remix-run/react";
+import { useNavigate, Navigate } from "@remix-run/react";
 import { useAuth } from "~/hooks/useAuth";
 import { useEffect, useState } from "react";
 import { destinoService } from "~/services/destinoService";
@@ -36,8 +36,16 @@ export default function Resultados() {
 
   if (!respuestas || respuestas.length === 0) {
     return (
-      <main className="h-[94vh] w-full bg-gradient-to-b from-[#000322] to-[#001140] flex flex-col items-center justify-center">
-        <h1 className="text-white text-2xl font-semibold">No se encontraron respuestas</h1>
+      <main className="min-h-screen w-full bg-[#f8f9fa] flex flex-col items-center justify-center">
+        <div className="bg-white p-8 rounded-lg shadow-lg">
+          <h1 className="text-[#0033A0] text-2xl font-semibold">No se encontraron respuestas</h1>
+          <button 
+            onClick={() => navigate('/tarjetas')}
+            className="mt-6 bg-[#0033A0] hover:bg-[#002169] text-white px-6 py-3 rounded-lg transition-colors"
+          >
+            Volver al inicio
+          </button>
+        </div>
       </main>
     );
   }
@@ -114,75 +122,132 @@ export default function Resultados() {
   };
 
   return (
-    <main className="h-[94vh] w-full bg-gradient-to-b from-[#000322] to-[#001140] flex flex-col relative overflow-hidden">
-      {/* Título con animación */}
-      <h1 className="h-[15vh] flex justify-center items-center text-white text-3xl md:text-4xl lg:text-5xl font-bold tracking-wide font-montserrat transition-transform duration-300 hover:scale-105 drop-shadow-lg my-4 px-4 text-center">
-        Tus preferencias:
-      </h1>
-
-      {/* Avión animado con trayectoria */}
-      <div className="absolute top-[10%] right-[5%] sm:right-[8%] md:right-[10%] z-10 animate-pulse hidden sm:block">
-        <i className="fas fa-paper-plane text-3xl md:text-4xl text-[#00d4ff]"></i>
-        <div className="absolute top-1/2 right-0 w-20 h-0.5 border-t-2 border-dashed border-[#00d4ff]/30 transform -translate-y-1/2"></div>
-      </div>
-
-      {/* Contenedor principal de resumen */}
-      <div className="flex flex-col h-[70vh] px-2 sm:px-4 md:px-8 lg:px-12 w-full max-w-6xl mx-auto overflow-y-auto">
-        <Form method="post" className="flex flex-col justify-evenly">
-          {/* En móvil cada pregunta seguida de su respuesta */}
-          {respuestas.map((respuesta, index) => (
-            <div key={index} className="flex flex-col sm:flex-row mb-4 sm:mb-6">
-              {/* Título de la pregunta */}
-              <div className="py-3 px-4 md:py-4 md:px-6 lg:py-5 lg:px-8 font-semibold bg-[#c5d5f9] text-[#000835] 
-                rounded-t-lg sm:rounded-t-none sm:rounded-l-lg shadow-md text-sm md:text-base lg:text-lg 
-                mb-0 w-full sm:w-1/2 border-b sm:border-b-0 sm:border-r border-[#a9bff0]">
-                {index === 0 && "Preferencia Destino:"}
-                {index === 1 && "Preferencia Climática:"}
-                {index === 2 && "Preferencia Actividad:"}
-                {index === 3 && "Preferencia Alojamiento:"}
-                {index === 4 && "Duración viaje:"}
-                {index === 5 && "Edad:"}
+    <div className="w-full bg-[#f8f9fa] h-[94vh] flex flex-col overflow-hidden">
+      {/* Main content container - using flex-1 to take remaining space */}
+      <div className="flex-1 flex flex-col overflow-hidden">
+        {/* Hero Section with gradient background - reduced height */}
+        <div className="w-full relative h-[22vh] bg-gradient-to-br from-[#0033A0] to-[#002169] overflow-hidden">
+          {/* Background Pattern */}
+          <div className="absolute inset-0 bg-[url('https://amadeus.com/static/custom/resources/20230829162608/dist/images/section-texture-bright.svg')] bg-center opacity-10"></div>
+          
+          {/* Decorative Elements */}
+          <div className="absolute bottom-0 left-0 w-full h-24 bg-gradient-to-t from-[#002169] to-transparent"></div>
+          <div className="absolute -bottom-16 -right-16 w-80 h-80 rounded-full bg-[#005EB8] opacity-20"></div>
+          <div className="absolute -top-16 -left-16 w-64 h-64 rounded-full bg-[#75B000] opacity-10"></div>
+          
+          {/* Back button integrated into hero section */}
+          <div className="absolute top-3 left-4 z-20">
+            <button 
+              onClick={volverAtras}
+              className="flex items-center gap-2 text-white hover:text-white/80 transition-colors bg-white/10 backdrop-blur-sm px-3 py-1.5 rounded-lg"
+            >
+              <i className="fa-solid fa-arrow-left text-sm"></i>
+              <span className="text-sm font-medium">Volver al test</span>
+            </button>
+          </div>
+          
+          {/* Content */}
+          <div className="container mx-auto h-full flex items-center justify-center px-6 relative z-10">
+            <div className="text-center">
+              <div className="flex gap-2 justify-center items-center mb-1">
+                <div className="bg-white/10 backdrop-blur-sm px-3 py-1 rounded-full inline-flex items-center">
+                  <i className="fa-solid fa-check-circle text-[#75B000] mr-2"></i>
+                  <span className="text-white/90 text-sm">Tus respuestas</span>
+                </div>
               </div>
-              {/* Respuesta */}
-              <div className="py-3 px-4 md:py-4 md:px-6 lg:py-5 lg:px-8 bg-[#011e41] text-white 
-                rounded-b-lg sm:rounded-b-none sm:rounded-r-lg shadow-md w-full sm:w-1/2">
-                <input
-                  type="text"
-                  readOnly
-                  value={respuesta}
-                  className="bg-transparent border-none text-white placeholder-white outline-none w-full text-sm md:text-base lg:text-lg"
-                  aria-label={`Respuesta ${index + 1}`}
-                />
-              </div>
+              <h1 className="text-white text-3xl lg:text-4xl font-light mb-2">Resumen de preferencias</h1>
+              <p className="text-white/80 max-w-2xl mx-auto text-sm">
+                Revisa tus preferencias antes de confirmar y descubrir los destinos que mejor se adaptan a tus gustos.
+              </p>
             </div>
-          ))}
-        </Form>
-      </div>
+          </div>
 
-      {/* Elementos decorativos flotantes */}
-      <div className="absolute inset-0 pointer-events-none">
-        <div className="absolute top-[15%] left-[10%] w-12 h-12 sm:w-16 sm:h-16 md:w-20 md:h-20 bg-[#00d4ff]/20 rounded-full animate-bounce-slow hidden sm:block"></div>
-        <div className="absolute top-[45%] right-[15%] w-16 h-16 sm:w-20 sm:h-20 md:w-28 md:h-28 bg-[#3a8bff]/20 rounded-full animate-float-slow hidden sm:block"></div>
-        <div className="absolute bottom-[20%] left-[20%] w-10 h-10 sm:w-12 sm:h-12 md:w-16 md:h-16 bg-[#75B000]/20 rounded-full animate-pulse hidden sm:block"></div>
-      </div>
+          {/* Bottom Curve */}
+          <div className="absolute bottom-0 left-0 right-0">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 60" className="w-full h-auto fill-[#f8f9fa]" preserveAspectRatio="none">
+              <path d="M0,0V60H1440V0C1440,0,1320,60,720,60C120,60,0,0,0,0Z"></path>
+            </svg>
+          </div>
+        </div>
 
-      {/* Botones de navegación */}
-      <div className="mt-auto flex flex-col sm:flex-row justify-center items-center gap-4 sm:gap-6 md:gap-8 py-6 sm:py-4 px-4">
-        <button
-          type="button"
-          onClick={volverAtras}
-          className="w-full sm:w-auto px-6 py-3 md:px-8 md:py-4 lg:px-10 lg:py-5 bg-[#011e41] hover:bg-[#000835] text-white rounded-lg shadow-lg transition-all duration-300 flex items-center justify-center gap-2 transform hover:-translate-x-1 text-sm md:text-base lg:text-lg"
-        >
-          <i className="fa-solid fa-arrow-left"></i> Atrás
-        </button>
-        <button
-          type="button"
-          onClick={enviarDestino}
-          className="w-full sm:w-auto px-6 py-3 md:px-8 md:py-4 lg:px-10 lg:py-5 bg-[#0c66e1] hover:bg-[#3a8bff] text-white rounded-lg shadow-lg transition-all duration-300 flex items-center justify-center gap-2 transform hover:translate-x-1 text-sm md:text-base lg:text-lg"
-        >
-          <i className="fa-solid fa-paper-plane"></i> Confirmar
-        </button>
+        {/* Content Section - added flex classes to center content card vertically */}
+        <div className="flex-1 container mx-auto px-6 -mt-12 relative z-20 flex justify-center items-center">
+          <div className="max-w-4xl w-full bg-white rounded-xl shadow-xl p-4 md:p-6">
+            <div className="flex flex-col space-y-4">
+              {respuestas.map((respuesta, index) => (
+                <div key={index} className="flex flex-col sm:flex-row border rounded-lg overflow-hidden shadow-sm transition-all duration-300 hover:shadow-md">
+                  {/* Título de la pregunta */}
+                  <div className="py-2 px-3 md:px-4 font-medium bg-[#f0f7ff] text-[#0033A0] 
+                    sm:w-1/2 border-b sm:border-b-0 sm:border-r border-[#e4ebf5] flex items-center">
+                    <i className={`
+                      ${index === 0 ? 'fa-solid fa-earth-americas' : ''}
+                      ${index === 1 ? 'fa-solid fa-cloud-sun' : ''}
+                      ${index === 2 ? 'fa-solid fa-person-hiking' : ''}
+                      ${index === 3 ? 'fa-solid fa-hotel' : ''}
+                      ${index === 4 ? 'fa-regular fa-calendar' : ''}
+                      ${index === 5 ? 'fa-solid fa-user' : ''}
+                      text-[#75B000] mr-3
+                    `}></i>
+                    <span>
+                      {index === 0 && "Preferencia Destino"}
+                      {index === 1 && "Preferencia Climática"}
+                      {index === 2 && "Preferencia Actividad"}
+                      {index === 3 && "Preferencia Alojamiento"}
+                      {index === 4 && "Duración viaje"}
+                      {index === 5 && "Edad"}
+                    </span>
+                  </div>
+                  
+                  {/* Respuesta */}
+                  <div className="py-2 px-3 md:px-4 text-gray-700 bg-white sm:w-1/2 flex items-center">
+                    <span className="font-medium">{respuesta}</span>
+                  </div>
+                </div>
+              ))}
+            </div>
+            
+            <div className="mt-6 flex flex-col sm:flex-row justify-center items-center gap-3 sm:gap-4">
+              <button
+                type="button"
+                onClick={volverAtras}
+                className="w-full sm:w-auto px-5 py-2 bg-white border border-[#0033A0] text-[#0033A0] rounded-lg shadow-sm transition-all duration-300 hover:bg-[#f0f7ff] flex items-center justify-center gap-2"
+              >
+                <i className="fa-solid fa-arrow-left"></i> Modificar respuestas
+              </button>
+              <button
+                type="button"
+                onClick={enviarDestino}
+                className="w-full sm:w-auto px-5 py-2 bg-gradient-to-r from-[#0033A0] to-[#0055CC] text-white rounded-lg shadow-lg transition-all duration-300 hover:shadow-xl flex items-center justify-center gap-2"
+              >
+                <i className="fa-solid fa-paper-plane"></i> Confirmar y continuar
+              </button>
+            </div>
+          </div>
+        </div>
       </div>
-    </main>
+      
+      {/* Footer - simplified and reduced height */}
+      <div className="bg-[#0033A0] text-white py-3 px-6">
+        <div className="container mx-auto">
+          <div className="flex flex-col md:flex-row justify-between items-center gap-2">
+            <div className="flex items-center gap-2">
+              <img 
+                src="https://www.amadeus.com/static/custom/resources/20230829162608/dist/images/header-logo.svg" 
+                alt="Amadeus" 
+                className="h-5 brightness-0 invert"
+                onError={(e) => {
+                  e.currentTarget.onerror = null;
+                  e.currentTarget.src = "https://cdn.icon-icons.com/icons2/2699/PNG/512/amadeus_logo_icon_170290.png";
+                }}
+              />
+              <span className="font-medium text-sm">Travel Technology</span>
+            </div>
+            <div className="text-xs opacity-70">
+              © {new Date().getFullYear()} Null Pointers. Todos los derechos reservados.
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   );
 }

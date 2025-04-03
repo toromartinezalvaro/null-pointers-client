@@ -34,12 +34,95 @@ const COLORS = [
 // Loading component to show when data is not ready
 const LoadingView = () => (
   <div className="flex justify-center items-center h-96">
-    <h2 className="text-2xl font-bold text-gray-700">Cargando estadísticas...</h2>
+    <h2 className="text-2xl font-bold text-gray-700">
+      Cargando estadísticas...
+    </h2>
   </div>
 );
 
 // Content component for statistics data
-const StatisticsContent = ({ usersData }: { usersData: UserWithPreferencesAndDestinations[] }) => {
+const StatisticsContent = ({
+  usersData,
+}: {
+  usersData: UserWithPreferencesAndDestinations[];
+}) => {
+  // Add state for sorting
+  const [sortField, setSortField] = useState<string | null>(null);
+  const [sortDirection, setSortDirection] = useState<'asc' | 'desc'>('asc');
+  
+  // Function to handle column sorting
+  const handleSort = (field: string) => {
+    if (sortField === field) {
+      // Toggle direction if clicking the same field
+      setSortDirection(sortDirection === 'asc' ? 'desc' : 'asc');
+    } else {
+      // Set new field and default to ascending
+      setSortField(field);
+      setSortDirection('asc');
+    }
+  };
+  
+  // Helper function to normalize text for sorting (removes accents/diacritics)
+  const normalizeText = (text: string) => {
+    return text
+      .toLowerCase()
+      .normalize("NFD") // Normalize to decomposed form
+      .replace(/[\u0300-\u036f]/g, ""); // Remove diacritics
+  };
+
+  // Sorted users data
+  const sortedUsersData = useMemo(() => {
+    if (!sortField) return usersData;
+    
+    return [...usersData].sort((a, b) => {
+      let aValue, bValue;
+      
+      // Get values based on sort field
+      switch (sortField) {
+        case 'tipo':
+          aValue = a.userType;
+          bValue = b.userType;
+          break;
+        case 'nombre':
+          // Normalize names to handle accented characters
+          aValue = normalizeText(a.nombre);
+          bValue = normalizeText(b.nombre);
+          break;
+        case 'email':
+          aValue = a.email.toLowerCase();
+          bValue = b.email.toLowerCase();
+          break;
+        case 'preferencias':
+          aValue = a.preferencias.length;
+          bValue = b.preferencias.length;
+          break;
+        case 'destinos':
+          aValue = a.destinos.length;
+          bValue = b.destinos.length;
+          break;
+        default:
+          aValue = a[sortField as keyof UserWithPreferencesAndDestinations];
+          bValue = b[sortField as keyof UserWithPreferencesAndDestinations];
+      }
+      
+      // Compare values based on direction
+      if (aValue < bValue) return sortDirection === 'asc' ? -1 : 1;
+      if (aValue > bValue) return sortDirection === 'asc' ? 1 : -1;
+      return 0;
+    });
+  }, [usersData, sortField, sortDirection]);
+  
+  // Sort indicator component
+  const SortIndicator = ({ field }: { field: string }) => {
+    if (sortField !== field) return null;
+    
+    return (
+      <span className="ml-1 text-gray-500">
+        {sortDirection === 'asc' ? '▲' : '▼'}
+      </span>
+    );
+  };
+
   // Datos para las tarjetas de resumen
   const totalUsers = usersData.length;
   const usersWithPreferences = usersData.filter(
@@ -617,46 +700,72 @@ const StatisticsContent = ({ usersData }: { usersData: UserWithPreferencesAndDes
           Detalle de Usuarios
         </h2>
 
-        <table className="w-full border-collapse mt-4">
-          <thead>
-            <tr>
-              <th className="border border-gray-200 p-2 bg-gray-100 font-medium">
-                ID
-              </th>
-              <th className="border border-gray-200 p-2 bg-gray-100 font-medium">
-                Nombre
-              </th>
-              <th className="border border-gray-200 p-2 bg-gray-100 font-medium">
-                Email
-              </th>
-              <th className="border border-gray-200 p-2 bg-gray-100 font-medium">
-                Tipo
-              </th>
-              <th className="border border-gray-200 p-2 bg-gray-100 font-medium">
-                # Preferencias
-              </th>
-              <th className="border border-gray-200 p-2 bg-gray-100 font-medium">
-                # Destinos
-              </th>
-            </tr>
-          </thead>
-          <tbody>
-            {usersData.map((user) => (
-              <tr key={user.id} className="even:bg-gray-50">
-                <td className="border border-gray-200 p-2">{user.id}</td>
-                <td className="border border-gray-200 p-2">{user.nombre}</td>
-                <td className="border border-gray-200 p-2">{user.email}</td>
-                <td className="border border-gray-200 p-2">{user.userType}</td>
-                <td className="border border-gray-200 p-2">
-                  {user.preferencias.length}
-                </td>
-                <td className="border border-gray-200 p-2">
-                  {user.destinos.length}
-                </td>
+        <div className="overflow-x-auto">
+          <table className="w-full border-collapse mt-4 bg-white shadow-sm rounded-lg overflow-hidden">
+            <thead>
+              <tr className="bg-gray-100 text-left">
+                <th 
+                  className="p-3 font-semibold text-sm text-gray-700 border-b cursor-pointer hover:bg-gray-200"
+                  onClick={() => handleSort('nombre')}
+                >
+                  Nombre <SortIndicator field="nombre" />
+                </th>
+                <th 
+                  className="p-3 font-semibold text-sm text-gray-700 border-b cursor-pointer hover:bg-gray-200"
+                  onClick={() => handleSort('email')}
+                >
+                  Email <SortIndicator field="email" />
+                </th>
+                <th 
+                  className="p-3 font-semibold text-sm text-gray-700 border-b cursor-pointer hover:bg-gray-200"
+                  onClick={() => handleSort('tipo')}
+                >
+                  Tipo <SortIndicator field="tipo" />
+                </th>
+                <th 
+                  className="p-3 font-semibold text-sm text-gray-700 border-b cursor-pointer hover:bg-gray-200"
+                  onClick={() => handleSort('preferencias')}
+                >
+                  # Preferencias <SortIndicator field="preferencias" />
+                </th>
+                <th 
+                  className="p-3 font-semibold text-sm text-gray-700 border-b cursor-pointer hover:bg-gray-200"
+                  onClick={() => handleSort('destinos')}
+                >
+                  # Destinos <SortIndicator field="destinos" />
+                </th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              {sortedUsersData.map((user) => (
+                <tr 
+                  key={user.id} 
+                  className="border-b hover:bg-gray-50 transition-colors"
+                >
+                  <td className="p-3 text-sm font-medium">{user.nombre}</td>
+                  <td className="p-3 text-sm text-blue-600">{user.email}</td>
+                  <td className="p-3 text-sm">
+                    <span className={`inline-block px-2 py-1 rounded-full text-xs font-medium ${
+                      user.userType === 'ADMIN' ? 'bg-purple-100 text-purple-800' : 'bg-green-100 text-green-800'
+                    }`}>
+                      {user.userType}
+                    </span>
+                  </td>
+                  <td className="p-3 text-sm text-center">
+                    <span className="font-medium">
+                      {user.preferencias.length}
+                    </span>
+                  </td>
+                  <td className="p-3 text-sm text-center">
+                    <span className="font-medium">
+                      {user.destinos.length}
+                    </span>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
   );
@@ -666,30 +775,32 @@ const StatisticsContent = ({ usersData }: { usersData: UserWithPreferencesAndDes
 export default function Statistics() {
   // Get navigation state and data
   const navigation = useNavigation();
-  const usersData = useLoaderData<typeof loader>() as UserWithPreferencesAndDestinations[];
-  
+  const usersData = useLoaderData<
+    typeof loader
+  >() as UserWithPreferencesAndDestinations[];
+
   // Set initial loading state
   const [isLoading, setIsLoading] = useState(true);
-  
+
   // Update loading state when data is available
   useEffect(() => {
     if (usersData && usersData.length > 0) {
       setIsLoading(false);
     }
   }, [usersData]);
-  
+
   // Check if we're navigating TO the statistics page
   // Only show loading when we're navigating to this route, not away from it
-  const isNavigatingToStatistics = 
-    navigation.state === "loading" && 
+  const isNavigatingToStatistics =
+    navigation.state === "loading" &&
     navigation.location?.pathname.includes("/reports/statistics");
-  
-  // Show loading view when we're either in initial loading state 
+
+  // Show loading view when we're either in initial loading state
   // or specifically navigating TO the statistics page
   if (isLoading || isNavigatingToStatistics) {
     return <LoadingView />;
   }
-  
+
   // We have data and loading is complete
   return <StatisticsContent usersData={usersData} />;
 }

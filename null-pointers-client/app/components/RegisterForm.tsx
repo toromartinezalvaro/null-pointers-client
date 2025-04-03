@@ -79,7 +79,12 @@ const RegisterForm: React.FC = () => {
         />
 
         {/* Selección de Rol con etiqueta dentro del campo */}
-        <select value={selectedRole} onChange={handleRoleChange} required>
+        <select 
+          value={selectedRole} 
+          onChange={handleRoleChange} 
+          required
+          aria-label="Selecciona tu rol"
+        >
           <option value="" disabled>
             Selecciona tu rol:{" "}
           </option>
@@ -95,7 +100,7 @@ const RegisterForm: React.FC = () => {
           />{" "}
           Acepto los{" "}
           <a
-            id="terms"
+            id="terms-link"
             href="https://amadeus.com/es/politicas/privacy-policy"
             target="_blank"
             rel="noopener noreferrer"

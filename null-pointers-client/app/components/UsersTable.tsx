@@ -1,6 +1,6 @@
-import "~/styles/users.css";
 import { useState } from "react";
 import ContactModal from "./ContactModal";
+import { XMarkIcon } from "@heroicons/react/24/outline";
 
 interface Destination {
   nombre: string;
@@ -63,61 +63,65 @@ export default function UsersTable({
 
   return (
     <>
-      <div className="table-container">
-        <table className="table">
-          <thead className="table-header">
+      <div className="bg-gray-100 rounded-lg shadow-md overflow-auto max-h-[91vh] scrollbar-hide">
+        <table className="w-full bg-white text-center text-sm">
+          <thead className="sticky top-0 h-12 bg-white">
             <tr>
-              <th className="w-1/5">Nombre</th>
-              <th className="w-1/5">Email</th>
-              <th className="w-2/5">Destinos Recomendados</th>
-              <th className="w-1/5">Contacto</th>
+              <th className="p-1.5 border-b border-gray-200 bg-gray-800 text-white w-[20%] text-xs">Nombre</th>
+              <th className="p-1.5 border-b border-gray-200 bg-gray-800 text-white w-[25%] text-xs">Email</th>
+              <th className="p-1.5 border-b border-gray-200 bg-gray-800 text-white w-[35%] max-w-[400px] text-xs">Destinos Recomendados</th>
+              <th className="p-1.5 border-b border-gray-200 bg-gray-800 text-white w-[20%] text-xs">Contacto</th>
             </tr>
           </thead>
           <tbody>
             {usuariosData.map((usuario) => (
               <tr key={usuario.email}>
-                <td className="table-cell w-1/5">{usuario.nombre}</td>
-                <td className="table-cell w-1/5">{usuario.email}</td>
-                <td className="table-cell w-2/5">
+                <td className="p-1.5 border-b border-gray-200 h-16 text-xs">{usuario.nombre}</td>
+                <td className="p-1.5 border-b border-gray-200 h-16 text-xs">{usuario.email}</td>
+                <td className="p-1.5 border-b border-gray-200 h-16 max-w-[400px]">
                   {selectedEmail !== usuario.email || !visibilidadPreferencias ? (
                     <button
                       onClick={() => handleViewDestinations(usuario.email)}
-                      className="button button-view"
+                      className="px-3 py-1.5 rounded bg-blue-500 text-white cursor-pointer hover:bg-blue-600 transition-all duration-200 disabled:opacity-50 text-xs"
                       disabled={cargando && selectedEmail === usuario.email}
                     >
                       {cargando && selectedEmail === usuario.email ? "Cargando..." : "Ver Destinos"}
                     </button>
                   ) : (
-                    <div className="destinations-container">
+                    <div className="flex items-start gap-2 h-full max-w-[350px]">
                       <button
                         onClick={() => setSelectedEmail(null)}
-                        className="button button-hide"
+                        className="w-6 h-6 rounded-full bg-red-500 text-white flex items-center justify-center hover:bg-red-600 transition-all duration-200 flex-shrink-0 mt-0.5"
+                        title="Ocultar destinos"
                       >
-                        Ocultar Destinos
+                        <XMarkIcon className="h-4 w-4" />
                       </button>
                       {error ? (
-                        <div className="error-message">Error: {error}</div>
+                        <div className="text-red-500 text-xs">Error: {error}</div>
                       ) : (
-                        <ul className="destinations-list">
+                        <ul className="flex flex-col flex-1 list-none m-0">
                           {preferenciasUsuario.length > 0 ? (
                             preferenciasUsuario.map((destino) => (
-                              <li key={destino.id} className="destination-item">
+                              <li 
+                                key={destino.id} 
+                                className="px-2 py-0.5 my-0.5 rounded bg-gray-50 text-xs hover:bg-gray-100 transition-all duration-200"
+                              >
                                 {destino.nombre}{" "}
                                 {destino.pais ? `(${destino.pais})` : ""}
                               </li>
                             ))
                           ) : (
-                            <li>No hay destinos para este usuario</li>
+                            <li className="text-gray-500 text-xs">No hay destinos para este usuario</li>
                           )}
                         </ul>
                       )}
                     </div>
                   )}
                 </td>
-                <td className="table-cell w-1/5">
+                <td className="p-1.5 border-b border-gray-200 h-16">
                   <button
                     onClick={() => openContactModal(usuario)}
-                    className="button button-contact"
+                    className="px-3 py-1.5 rounded bg-emerald-500 text-white cursor-pointer hover:bg-emerald-600 transition-all duration-200 hover:scale-105 text-xs"
                   >
                     Contactar
                   </button>
@@ -128,7 +132,6 @@ export default function UsersTable({
         </table>
       </div>
 
-      {/* Modal de contacto como componente separado */}
       <ContactModal 
         isOpen={contactModalOpen}
         onClose={closeContactModal}

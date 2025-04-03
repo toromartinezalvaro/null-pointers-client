@@ -30,6 +30,14 @@ const ReportsAsideMenu = () => {
               Preferencias
             </NavLink>
           </li>
+          <li>
+            <NavLink
+              to="statistics"
+              className={({ isActive }) => (isActive ? "active" : "")}
+            >
+              Estadísticas
+            </NavLink>
+          </li>
         </ul>
       </nav>
     </aside>

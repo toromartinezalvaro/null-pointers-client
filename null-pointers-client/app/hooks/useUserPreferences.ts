@@ -5,7 +5,16 @@ import { API_URL, API_CONFIG } from "~/constants/api";
 
 interface UserPreference {
   nombre: string;
-  nombre_continente: string;
+  nombre_continente?: string;
+  id: number;
+  comidaTipica: string;
+  createdAt: string;
+  idioma: string;
+  imgUrl: string;
+  lugarImperdible: string;
+  pais: string;
+  continentesId: number;
+  continentes: null;
 }
 
 export function useUserPreferences() {
@@ -44,10 +53,8 @@ export function useUserPreferences() {
           const data = await proxyResponse.json();
           console.log("[userPreferences] Datos obtenidos del proxy:", data);
           
-          // Extract destinos from the response
-          const destinos = data[0]?.destinos || [];
-          
-          setPreferenciasUsuario(destinos);
+          // La respuesta ya es un array de destinos directamente, no necesitamos extraerlo
+          setPreferenciasUsuario(data);
           setVisibilidadPreferencias(true);
           setCargando(false);
           return;
@@ -77,10 +84,8 @@ export function useUserPreferences() {
       const data = await response.json();
       console.log("[userPreferences] Received user preferences data:", data);
       
-      // Extract destinos from the response
-      const destinos = data[0]?.destinos || [];
-      
-      setPreferenciasUsuario(destinos);
+      // La respuesta ya es un array de destinos directamente
+      setPreferenciasUsuario(data);
       setVisibilidadPreferencias(true);
     } catch (error) {
       console.error("[userPreferences] Error loading user preferences:", error);

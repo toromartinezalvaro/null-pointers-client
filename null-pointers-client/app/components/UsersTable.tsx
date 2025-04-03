@@ -4,7 +4,7 @@ import ContactModal from "./ContactModal";
 
 interface Destination {
   nombre: string;
-  nombre_continente: string;
+  nombre_continente?: string;
   id: number;
   comidaTipica: string;
   createdAt: string;
@@ -23,10 +23,10 @@ interface User {
 
 interface UsersTableProps {
   usuariosData: User[];
-  preferenciasUsuario: any[]; // Updated type
-  visibilidadPreferencias: boolean; // Updated type
+  preferenciasUsuario: Destination[]; // Actualizada para usar la interfaz Destination
+  visibilidadPreferencias: boolean;
   loadPreferenciasUsuario: (email: string) => void;
-  cargando: boolean; // Updated type
+  cargando: boolean;
   error?: string | null;
 }
 
@@ -100,12 +100,10 @@ export default function UsersTable({
                       ) : (
                         <ul className="destinations-list">
                           {preferenciasUsuario.length > 0 ? (
-                            preferenciasUsuario.map((destino, index) => (
-                              <li key={index} className="destination-item">
+                            preferenciasUsuario.map((destino) => (
+                              <li key={destino.id} className="destination-item">
                                 {destino.nombre}{" "}
-                                {destino.nombre_continente
-                                  ? `(${destino.nombre_continente})`
-                                  : ""}
+                                {destino.pais ? `(${destino.pais})` : ""}
                               </li>
                             ))
                           ) : (

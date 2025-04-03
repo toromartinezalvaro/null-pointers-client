@@ -96,9 +96,9 @@ export function useContactModal(isOpen: boolean, user: User | null) {
     // Versión HTML
     let htmlContent = `
       <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
-        <div style="padding: 20px;">
+        <div style="padding: 20px">
           <div style="text-align: center; margin-bottom: 20px;">
-            <img src="/assets/img/amadeus-logo.png" alt="Amadeus Logo" style="max-height: 60px;" />
+            <img src="/imagenes/amadeus-logo-dark-sky.png" alt="Amadeus Logo" style="max-height: 60px;" />
           </div>
           <p style="font-size: 16px; line-height: 1.5; color: #333;">Estimado/a ${usuario.nombre},</p>
     `;

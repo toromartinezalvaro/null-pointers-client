@@ -73,16 +73,12 @@ export default function ContactModal({
               {/* Membrete con imágenes */}
               <div className="email-header mb-6">
                 <div className="email-letterhead flex justify-between items-center border-b border-gray-200 pb-4">
-                  <div className="logo-container">
+                  <div className="logo-container border border-gray-200 p-2 rounded flex items-center justify-center" style={{ minWidth: "150px" }}>
                     <img
-                      src="/assets/img/amadeus-logo.png"
+                      className="h-12 w-auto transition-transform duration-300"
+                      src="/imagenes/amadeus-logo-dark-sky.png?v=1"
                       alt="Amadeus Logo"
-                      className="h-12 w-auto" 
-                      onError={(e) => {
-                        const target = e.target as HTMLImageElement;
-                        target.onerror = null;
-                        target.src = "https://placehold.co/200x80?text=Amadeus";
-                      }}
+                      width="120"
                     />
                   </div>
 

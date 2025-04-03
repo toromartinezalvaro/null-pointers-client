@@ -44,41 +44,6 @@ export default function Plans() {
           <i className="fa-solid fa-arrow-left text-sm"></i>
           <span className="text-sm font-medium">Volver a destinos</span>
         </Link>
-        
-        <div className="flex items-center gap-4">
-          <a 
-            href="https://amadeus.com/en" 
-            target="_blank" 
-            rel="noopener noreferrer"
-            className="text-gray-500 text-sm hover:text-[#0033A0] transition-colors"
-          >
-            Inicio
-          </a>
-          <a 
-            href="https://amadeus.com/en/portfolio/airlines" 
-            target="_blank" 
-            rel="noopener noreferrer"
-            className="text-gray-500 text-sm hover:text-[#0033A0] transition-colors"
-          >
-            Aerolíneas
-          </a>
-          <a 
-            href="https://amadeus.com/en/portfolio/hotels" 
-            target="_blank" 
-            rel="noopener noreferrer"
-            className="text-gray-500 text-sm hover:text-[#0033A0] transition-colors"
-          >
-            Hoteles
-          </a>
-          <a 
-            href="https://amadeus.com/en/contact/travel-sellers" 
-            target="_blank" 
-            rel="noopener noreferrer"
-            className="text-gray-500 text-sm hover:text-[#0033A0] transition-colors"
-          >
-            Contacto
-          </a>
-        </div>
       </div>
 
       <div className="w-full relative h-[50vh] min-h-[400px] bg-gradient-to-br from-[#0033A0] to-[#002169] overflow-hidden">

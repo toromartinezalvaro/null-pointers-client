@@ -1,4 +1,4 @@
-import { useLoaderData } from "@remix-run/react";
+import { useLoaderData, useNavigation } from "@remix-run/react";
 import { loader } from "~/loaders/statisticsLoader";
 import { UserWithPreferencesAndDestinations } from "~/interfaces/userWithPreferencesAndDestinations";
 import {
@@ -14,7 +14,7 @@ import {
   Pie,
   Cell,
 } from "recharts";
-import { useMemo } from "react";
+import { useMemo, useState, useEffect } from "react";
 
 export { loader };
 
@@ -31,11 +31,15 @@ const COLORS = [
   "#d0ed57",
 ];
 
-export default function Statistics() {
-  const usersData = useLoaderData<
-    typeof loader
-  >() as UserWithPreferencesAndDestinations[];
+// Loading component to show when data is not ready
+const LoadingView = () => (
+  <div className="flex justify-center items-center h-96">
+    <h2 className="text-2xl font-bold text-gray-700">Cargando estadísticas...</h2>
+  </div>
+);
 
+// Content component for statistics data
+const StatisticsContent = ({ usersData }: { usersData: UserWithPreferencesAndDestinations[] }) => {
   // Datos para las tarjetas de resumen
   const totalUsers = usersData.length;
   const usersWithPreferences = usersData.filter(
@@ -656,4 +660,36 @@ export default function Statistics() {
       </div>
     </div>
   );
+};
+
+// Main component that handles loading state
+export default function Statistics() {
+  // Get navigation state and data
+  const navigation = useNavigation();
+  const usersData = useLoaderData<typeof loader>() as UserWithPreferencesAndDestinations[];
+  
+  // Set initial loading state
+  const [isLoading, setIsLoading] = useState(true);
+  
+  // Update loading state when data is available
+  useEffect(() => {
+    if (usersData && usersData.length > 0) {
+      setIsLoading(false);
+    }
+  }, [usersData]);
+  
+  // Check if we're navigating TO the statistics page
+  // Only show loading when we're navigating to this route, not away from it
+  const isNavigatingToStatistics = 
+    navigation.state === "loading" && 
+    navigation.location?.pathname.includes("/reports/statistics");
+  
+  // Show loading view when we're either in initial loading state 
+  // or specifically navigating TO the statistics page
+  if (isLoading || isNavigatingToStatistics) {
+    return <LoadingView />;
+  }
+  
+  // We have data and loading is complete
+  return <StatisticsContent usersData={usersData} />;
 }

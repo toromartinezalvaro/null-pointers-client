@@ -1,26 +1,26 @@
-import { useLoaderData, useNavigate } from "@remix-run/react";
+import { useState } from "react";
+import { useLoaderData } from "@remix-run/react";
+import { loader } from "~/loaders/preferencesLoader";
 import "~/styles/preferences.css";
-import { preferencesLoader } from "../loaders/preferencesLoader";
 import { Preferencia } from "../interfaces/preference";
 import PreferencesTable from "../components/PreferencesTable";
-import { useAuth } from "~/hooks/useAuth";
 
-
-export const loader = preferencesLoader;
+export { loader };
 
 export default function Preferences() {
-  const preferenciasData = useLoaderData<Preferencia[]>();
-
-  const navigate = useNavigate();
-  const { authorized } = useAuth(["ADMIN"]);
-
-  if (!authorized) {
-    navigate("/login");
-  }
+  const preferenciasData = useLoaderData<typeof loader>() || [];
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   return (
     <div className="container">
-      <PreferencesTable preferenciasData={preferenciasData} />
+      {isLoading ? (
+        <div className="loading-indicator">Loading preferences...</div>
+      ) : error ? (
+        <div className="error-message">Error: {error}</div>
+      ) : (
+        <PreferencesTable preferenciasData={preferenciasData} />
+      )}
     </div>
   );
 }

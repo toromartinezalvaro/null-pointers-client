@@ -23,10 +23,11 @@ interface User {
 
 interface UsersTableProps {
   usuariosData: User[];
-  preferenciasUsuario: { [email: string]: Destination[] };
-  visibilidadPreferencias: { [email: string]: boolean };
+  preferenciasUsuario: any[]; // Updated type
+  visibilidadPreferencias: boolean; // Updated type
   loadPreferenciasUsuario: (email: string) => void;
-  cargando: { [email: string]: boolean };
+  cargando: boolean; // Updated type
+  error?: string | null;
 }
 
 export default function UsersTable({
@@ -35,13 +36,20 @@ export default function UsersTable({
   visibilidadPreferencias,
   loadPreferenciasUsuario,
   cargando,
+  error,
 }: UsersTableProps) {
   const [contactModalOpen, setContactModalOpen] = useState(false);
   const [selectedUser, setSelectedUser] = useState<User | null>(null);
+  const [selectedEmail, setSelectedEmail] = useState<string | null>(null);
 
   if (!usuariosData || usuariosData.length === 0) {
     return <div>No users found.</div>;
   }
+
+  const handleViewDestinations = (email: string) => {
+    setSelectedEmail(email);
+    loadPreferenciasUsuario(email);
+  };
 
   const openContactModal = (usuario: User) => {
     setSelectedUser(usuario);
@@ -71,34 +79,40 @@ export default function UsersTable({
                 <td className="table-cell w-1/5">{usuario.nombre}</td>
                 <td className="table-cell w-1/5">{usuario.email}</td>
                 <td className="table-cell w-2/5">
-                  {!visibilidadPreferencias[usuario.email] ? (
+                  {selectedEmail !== usuario.email || !visibilidadPreferencias ? (
                     <button
-                      onClick={() => loadPreferenciasUsuario(usuario.email)}
+                      onClick={() => handleViewDestinations(usuario.email)}
                       className="button button-view"
-                      disabled={cargando[usuario.email]}
+                      disabled={cargando && selectedEmail === usuario.email}
                     >
-                      {cargando[usuario.email] ? "Cargando..." : "Ver Destinos"}
+                      {cargando && selectedEmail === usuario.email ? "Cargando..." : "Ver Destinos"}
                     </button>
                   ) : (
                     <div className="destinations-container">
                       <button
-                        onClick={() => loadPreferenciasUsuario(usuario.email)}
+                        onClick={() => setSelectedEmail(null)}
                         className="button button-hide"
                       >
                         Ocultar Destinos
                       </button>
-                      <ul className="destinations-list">
-                        {preferenciasUsuario[usuario.email]?.map(
-                          (destino, index) => (
-                            <li key={index} className="destination-item">
-                              {destino.nombre}{" "}
-                              {destino.nombre_continente
-                                ? `(${destino.nombre_continente})`
-                                : ""}
-                            </li>
-                          )
-                        )}
-                      </ul>
+                      {error ? (
+                        <div className="error-message">Error: {error}</div>
+                      ) : (
+                        <ul className="destinations-list">
+                          {preferenciasUsuario.length > 0 ? (
+                            preferenciasUsuario.map((destino, index) => (
+                              <li key={index} className="destination-item">
+                                {destino.nombre}{" "}
+                                {destino.nombre_continente
+                                  ? `(${destino.nombre_continente})`
+                                  : ""}
+                              </li>
+                            ))
+                          ) : (
+                            <li>No hay destinos para este usuario</li>
+                          )}
+                        </ul>
+                      )}
                     </div>
                   )}
                 </td>

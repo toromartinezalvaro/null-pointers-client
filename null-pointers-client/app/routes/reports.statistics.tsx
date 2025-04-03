@@ -15,6 +15,8 @@ import {
   Cell,
 } from "recharts";
 import { useMemo, useState, useEffect } from "react";
+import { useAuth } from "~/hooks/useAuth";
+import { useNavigate } from "@remix-run/react";
 
 export { loader };
 
@@ -773,34 +775,33 @@ const StatisticsContent = ({
 
 // Main component that handles loading state
 export default function Statistics() {
-  // Get navigation state and data
-  const navigation = useNavigation();
-  const usersData = useLoaderData<
-    typeof loader
-  >() as UserWithPreferencesAndDestinations[];
+  const usersData = useLoaderData<typeof loader>() || [];
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
-  // Set initial loading state
-  const [isLoading, setIsLoading] = useState(true);
-
-  // Update loading state when data is available
-  useEffect(() => {
-    if (usersData && usersData.length > 0) {
-      setIsLoading(false);
-    }
-  }, [usersData]);
-
-  // Check if we're navigating TO the statistics page
-  // Only show loading when we're navigating to this route, not away from it
-  const isNavigatingToStatistics =
-    navigation.state === "loading" &&
-    navigation.location?.pathname.includes("/reports/statistics");
-
-  // Show loading view when we're either in initial loading state
-  // or specifically navigating TO the statistics page
-  if (isLoading || isNavigatingToStatistics) {
+  if (isLoading) {
     return <LoadingView />;
   }
 
-  // We have data and loading is complete
+  if (error) {
+    return (
+      <div className="flex justify-center items-center h-96">
+        <h2 className="text-2xl font-bold text-red-700">
+          Error: {error}
+        </h2>
+      </div>
+    );
+  }
+
+  if (!usersData || usersData.length === 0) {
+    return (
+      <div className="flex justify-center items-center h-96">
+        <h2 className="text-2xl font-bold text-gray-700">
+          No hay datos disponibles
+        </h2>
+      </div>
+    );
+  }
+
   return <StatisticsContent usersData={usersData} />;
 }

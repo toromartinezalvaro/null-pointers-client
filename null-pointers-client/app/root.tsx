@@ -6,8 +6,10 @@ import {
   Scripts,
   ScrollRestoration,
 } from "@remix-run/react";
+import { useEffect } from "react";
 import appStylesHref from "./app.css?url";
 import MenuNavegacion from "./routes/menu-navegacion";
+import { setupFetchInterceptor } from "./utils/interceptors";
 
 export const links: LinksFunction = () => [
   { rel: "stylesheet", href: appStylesHref },
@@ -35,6 +37,13 @@ export const links: LinksFunction = () => [
 ];
 
 export default function App() {
+  // Setup fetch interceptor for CORS handling
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      setupFetchInterceptor();
+    }
+  }, []);
+
   return (
     <html lang="es">
       <head>

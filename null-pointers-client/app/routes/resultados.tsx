@@ -2,6 +2,8 @@ import { useNavigate, Navigate } from "@remix-run/react";
 import { useAuth } from "~/hooks/useAuth";
 import { useEffect, useState } from "react";
 import { destinoService } from "~/services/destinoService";
+import { fetchWithCertBypass } from "~/utils/fetchUtil";
+import { API_URL, API_CONFIG } from "~/constants/api";
 
 export const links = () => {
   return [
@@ -31,6 +33,7 @@ export default function Resultados() {
   }, []);
 
   const [respuestas, setRespuestas] = useState<string[]>([]);
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const navigate = useNavigate();
   const { authorized } = useAuth(["CLIENT", "ADMIN"]);
 
@@ -56,10 +59,22 @@ export default function Resultados() {
   }
 
   const enviarDestino = async () => {
+    // Evitar múltiples envíos
+    if (isSubmitting) {
+      return;
+    }
+    
+    setIsSubmitting(true);
+    
     try {
       const userAuthData = sessionStorage.getItem("userAuthData");
       const parsedData = userAuthData ? JSON.parse(userAuthData) : null;
       const email = parsedData?.email || "";
+      const token = parsedData?.token || "";
+
+      if (!email || !token) {
+        throw new Error("Datos de usuario no disponibles. Por favor inicie sesión nuevamente.");
+      }
 
       const body = {
         email: email,
@@ -71,13 +86,35 @@ export default function Resultados() {
         rango_edad: sessionStorage.getItem("respuesta_5") || "",
       };
 
-      const response = await fetch("http://localhost:5220/api/PreferenciaUsuarios/asignar", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(body),
-      });
+      console.log("[resultados] Enviando preferencias de usuario:", body);
+      
+      // Primero intenta con el proxy interno
+      let response;
+      try {
+        response = await fetch(`/api/proxy?path=/api/PreferenciaUsuarios/asignar`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${token}`
+          },
+          body: JSON.stringify(body)
+        });
+        
+        console.log(`[resultados] Respuesta del proxy: ${response.status}`);
+      } catch (proxyError) {
+        console.error("[resultados] Error con el proxy, intentando directamente:", proxyError);
+        
+        // Si falla el proxy, intenta directamente
+        response = await fetchWithCertBypass(`${API_URL}/api/PreferenciaUsuarios/asignar`, {
+          method: "POST",
+          headers: {
+            ...API_CONFIG.defaultHeaders,
+            "Authorization": `Bearer ${token}`
+          },
+          credentials: 'include',
+          body: JSON.stringify(body)
+        });
+      }
 
       if (!response.ok) {
         throw new Error(`Error en la API: ${response.status} ${response.statusText}`);
@@ -86,7 +123,7 @@ export default function Resultados() {
       // Verifica si la respuesta tiene contenido antes de parsearla
       const text = await response.text();
       if (!text) {
-        console.warn("La API devolvió una respuesta vacía");
+        console.warn("[resultados] La API devolvió una respuesta vacía");
         return;
       }
 
@@ -94,20 +131,26 @@ export default function Resultados() {
       try {
         data = JSON.parse(text);
       } catch (jsonError) {
-        console.error("La respuesta de la API no es un JSON válido:", text);
+        console.error("[resultados] La respuesta de la API no es un JSON válido:", text);
         throw new Error("La respuesta de la API no es un JSON válido");
       }
 
       if (data) {
         sessionStorage.setItem("destinos", JSON.stringify(data));
+        console.log("[resultados] Destinos guardados en sessionStorage:", data);
       }
 
       destinoService.destinoA = data[0];
       destinoService.destinoE = data[1];
 
+      // Redirigir a la página de destino
+      console.log("[resultados] Redirigiendo a /destino");
       navigate("/destino");
     } catch (error) {
-      console.error("Error en la solicitud:", error);
+      console.error("[resultados] Error en la solicitud:", error);
+      alert("Ha ocurrido un error al procesar tu solicitud. Por favor intenta nuevamente.");
+    } finally {
+      setIsSubmitting(false);
     }
   };
 

@@ -1,12 +1,13 @@
 import React from "react";
-import { useNavigate } from "@remix-run/react";
 import { LoginFormValues } from "~/interfaces/loginForm";
 import "~/styles/login.css";
 import { authenticate } from "~/services/auth";
 
-export default function Login() {
-  const navigate = useNavigate();
+interface LoginProps {
+  navigate: (to: string) => void;
+}
 
+export default function Login({ navigate }: LoginProps) {
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const formData = new FormData(event.currentTarget);

@@ -1,18 +1,20 @@
-import { useLoaderData, useNavigate } from "@remix-run/react";
-import { usersLoader } from "../loaders/usersLoader";
+import { useState } from "react";
+import { useLoaderData } from "@remix-run/react";
+import { loader } from "~/loaders/usersLoader";
 import UsersTable from "../components/UsersTable";
 import { useUserPreferences } from "../hooks/useUserPreferences";
-import { useAuth } from "~/hooks/useAuth";
-
-export const loader = usersLoader;
 
 interface User {
   nombre: string;
   email: string;
 }
 
+export { loader };
+
 export default function Users() {
-  const usuariosData = useLoaderData<User[]>();
+  const usuariosData = useLoaderData<typeof loader>() || [];
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   const {
     preferenciasUsuario,
@@ -21,20 +23,21 @@ export default function Users() {
     cargando,
   } = useUserPreferences();
 
-  const navigate = useNavigate();
-    const { authorized } = useAuth(["ADMIN"]);
-
-    if (!authorized) {
-      navigate("/login");
-    }
-
   return (
-    <UsersTable
-      usuariosData={usuariosData}
-      preferenciasUsuario={preferenciasUsuario}
-      visibilidadPreferencias={visibilidadPreferencias}
-      loadPreferenciasUsuario={loadPreferenciasUsuario}
-      cargando={cargando}
-    />
+    <>
+      {isLoading ? (
+        <div className="loading-indicator">Loading users...</div>
+      ) : error ? (
+        <div className="error-message">Error: {error}</div>
+      ) : (
+        <UsersTable
+          usuariosData={usuariosData}
+          preferenciasUsuario={preferenciasUsuario}
+          visibilidadPreferencias={visibilidadPreferencias}
+          loadPreferenciasUsuario={loadPreferenciasUsuario}
+          cargando={cargando}
+        />
+      )}
+    </>
   );
 }

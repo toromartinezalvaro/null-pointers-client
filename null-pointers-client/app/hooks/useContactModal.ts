@@ -2,6 +2,8 @@ import { useState, useEffect, useCallback } from "react";
 import { getTokenFromCookiesClient } from "~/utils/cookieUtils";
 import emailjs from '@emailjs/browser';
 import { EMAILJS_CONFIG } from "~/utils/emailConfig";
+import { fetchWithCertBypass } from "~/utils/fetchUtil";
+import { API_URL, API_CONFIG } from "~/constants/api";
 
 interface Destination {
   nombre: string;
@@ -49,13 +51,45 @@ export function useContactModal(isOpen: boolean, user: User | null) {
         throw new Error("Token de autenticación no encontrado");
       }
       
-      // Usamos el endpoint específico con el email del usuario
-      const apiUrl = `http://localhost:5220/api/Destinos/by-email/${email}`;
-      console.log("Llamando a API:", apiUrl);
+      // Primero intentamos con el proxy interno
+      try {
+        console.log("[contactModal] Intentando con proxy interno");
+        const proxyUrl = `/api/proxy?path=/api/Destinos/by-email/${email}`;
+        
+        const proxyResponse = await fetch(proxyUrl, {
+          method: "GET",
+          headers: {
+            "Authorization": `Bearer ${token}`,
+          },
+        });
+        
+        if (proxyResponse.ok) {
+          const data = await proxyResponse.json();
+          console.log("[contactModal] Respuesta del proxy:", data);
+          setDestinosDelUsuario(data);
+          
+          if (data && data.length > 0) {
+            console.log(`[contactModal] Se encontraron ${data.length} destinos para el usuario`);
+          } else {
+            console.log("[contactModal] No se encontraron destinos para el usuario");
+          }
+          setIsLoading(false);
+          return;
+        } else {
+          console.log("[contactModal] El proxy falló, intentando método directo");
+        }
+      } catch (proxyError) {
+        console.error("[contactModal] Error en proxy, fallback a método directo:", proxyError);
+      }
       
-      const response = await fetch(apiUrl, {
+      // Si el proxy falla, intentamos directamente
+      const apiUrl = `${API_URL}/api/Destinos/by-email/${email}`;
+      console.log("[contactModal] Llamando a API directamente:", apiUrl);
+      
+      const response = await fetchWithCertBypass(apiUrl, {
         method: "GET",
         headers: {
+          ...API_CONFIG.defaultHeaders,
           "Authorization": `Bearer ${token}`,
         },
       });
@@ -66,18 +100,18 @@ export function useContactModal(isOpen: boolean, user: User | null) {
       
       // Parseamos la respuesta JSON
       const data = await response.json();
-      console.log("Respuesta de la API:", data);
+      console.log("[contactModal] Respuesta de la API:", data);
       
       // Guardamos los destinos en el estado
       setDestinosDelUsuario(data);
       
       if (data && data.length > 0) {
-        console.log(`Se encontraron ${data.length} destinos para el usuario`);
+        console.log(`[contactModal] Se encontraron ${data.length} destinos para el usuario`);
       } else {
-        console.log("No se encontraron destinos para el usuario");
+        console.log("[contactModal] No se encontraron destinos para el usuario");
       }
     } catch (error) {
-      console.error("Error al cargar destinos:", error);
+      console.error("[contactModal] Error al cargar destinos:", error);
       alert("Error al cargar los destinos. Revisa la consola para más detalles.");
       setDestinosDelUsuario([]);
     } finally {

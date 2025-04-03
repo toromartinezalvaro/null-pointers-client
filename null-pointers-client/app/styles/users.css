@@ -54,6 +54,16 @@
   width: 30%;
 }
 
+.button-contact {
+  background-color: #10b981;
+  transition: all 0.2s ease-in-out;
+}
+
+.button-contact:hover {
+  background-color: #059669;
+  transform: scale(1.05);
+}
+
 .destinations-container {
   display: flex;
   align-items: center;

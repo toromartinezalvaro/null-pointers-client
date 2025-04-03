@@ -36,7 +36,7 @@ export default function Resultados() {
 
   if (!respuestas || respuestas.length === 0) {
     return (
-      <main className="h-[94vh] w-full bg-indigo-950 flex flex-col items-center justify-center">
+      <main className="h-[94vh] w-full bg-gradient-to-b from-[#000322] to-[#001140] flex flex-col items-center justify-center">
         <h1 className="text-white text-2xl font-semibold">No se encontraron respuestas</h1>
       </main>
     );
@@ -114,7 +114,7 @@ export default function Resultados() {
   };
 
   return (
-    <main className="h-[94vh] w-full bg-gradient-to-b from-indigo-950 to-indigo-900 flex flex-col relative overflow-hidden">
+    <main className="h-[94vh] w-full bg-gradient-to-b from-[#000322] to-[#001140] flex flex-col relative overflow-hidden">
       {/* Título con animación */}
       <h1 className="h-[15vh] flex justify-center items-center text-white text-3xl md:text-4xl lg:text-5xl font-bold tracking-wide font-montserrat transition-transform duration-300 hover:scale-105 drop-shadow-lg my-4 px-4 text-center">
         Tus preferencias:
@@ -122,8 +122,8 @@ export default function Resultados() {
 
       {/* Avión animado con trayectoria */}
       <div className="absolute top-[10%] right-[5%] sm:right-[8%] md:right-[10%] z-10 animate-pulse hidden sm:block">
-        <i className="fas fa-paper-plane text-3xl md:text-4xl text-blue-400"></i>
-        <div className="absolute top-1/2 right-0 w-20 h-0.5 border-t-2 border-dashed border-blue-400/30 transform -translate-y-1/2"></div>
+        <i className="fas fa-paper-plane text-3xl md:text-4xl text-[#00d4ff]"></i>
+        <div className="absolute top-1/2 right-0 w-20 h-0.5 border-t-2 border-dashed border-[#00d4ff]/30 transform -translate-y-1/2"></div>
       </div>
 
       {/* Contenedor principal de resumen */}
@@ -133,9 +133,9 @@ export default function Resultados() {
           {respuestas.map((respuesta, index) => (
             <div key={index} className="flex flex-col sm:flex-row mb-4 sm:mb-6">
               {/* Título de la pregunta */}
-              <div className="py-3 px-4 md:py-4 md:px-6 lg:py-5 lg:px-8 font-semibold bg-blue-100 text-indigo-950 
+              <div className="py-3 px-4 md:py-4 md:px-6 lg:py-5 lg:px-8 font-semibold bg-[#c5d5f9] text-[#000835] 
                 rounded-t-lg sm:rounded-t-none sm:rounded-l-lg shadow-md text-sm md:text-base lg:text-lg 
-                mb-0 w-full sm:w-1/2 border-b sm:border-b-0 sm:border-r border-indigo-200">
+                mb-0 w-full sm:w-1/2 border-b sm:border-b-0 sm:border-r border-[#a9bff0]">
                 {index === 0 && "Preferencia Destino:"}
                 {index === 1 && "Preferencia Climática:"}
                 {index === 2 && "Preferencia Actividad:"}
@@ -144,7 +144,7 @@ export default function Resultados() {
                 {index === 5 && "Edad:"}
               </div>
               {/* Respuesta */}
-              <div className="py-3 px-4 md:py-4 md:px-6 lg:py-5 lg:px-8 bg-indigo-800 text-white 
+              <div className="py-3 px-4 md:py-4 md:px-6 lg:py-5 lg:px-8 bg-[#011e41] text-white 
                 rounded-b-lg sm:rounded-b-none sm:rounded-r-lg shadow-md w-full sm:w-1/2">
                 <input
                   type="text"
@@ -161,9 +161,9 @@ export default function Resultados() {
 
       {/* Elementos decorativos flotantes */}
       <div className="absolute inset-0 pointer-events-none">
-        <div className="absolute top-[15%] left-[10%] w-12 h-12 sm:w-16 sm:h-16 md:w-20 md:h-20 bg-blue-300/20 rounded-full animate-bounce-slow hidden sm:block"></div>
-        <div className="absolute top-[45%] right-[15%] w-16 h-16 sm:w-20 sm:h-20 md:w-28 md:h-28 bg-indigo-400/20 rounded-full animate-float-slow hidden sm:block"></div>
-        <div className="absolute bottom-[20%] left-[20%] w-10 h-10 sm:w-12 sm:h-12 md:w-16 md:h-16 bg-purple-300/20 rounded-full animate-pulse hidden sm:block"></div>
+        <div className="absolute top-[15%] left-[10%] w-12 h-12 sm:w-16 sm:h-16 md:w-20 md:h-20 bg-[#00d4ff]/20 rounded-full animate-bounce-slow hidden sm:block"></div>
+        <div className="absolute top-[45%] right-[15%] w-16 h-16 sm:w-20 sm:h-20 md:w-28 md:h-28 bg-[#3a8bff]/20 rounded-full animate-float-slow hidden sm:block"></div>
+        <div className="absolute bottom-[20%] left-[20%] w-10 h-10 sm:w-12 sm:h-12 md:w-16 md:h-16 bg-[#75B000]/20 rounded-full animate-pulse hidden sm:block"></div>
       </div>
 
       {/* Botones de navegación */}
@@ -171,14 +171,14 @@ export default function Resultados() {
         <button
           type="button"
           onClick={volverAtras}
-          className="w-full sm:w-auto px-6 py-3 md:px-8 md:py-4 lg:px-10 lg:py-5 bg-indigo-800 hover:bg-indigo-700 text-blue-100 rounded-lg shadow-lg transition-all duration-300 flex items-center justify-center gap-2 transform hover:-translate-x-1 text-sm md:text-base lg:text-lg"
+          className="w-full sm:w-auto px-6 py-3 md:px-8 md:py-4 lg:px-10 lg:py-5 bg-[#011e41] hover:bg-[#000835] text-white rounded-lg shadow-lg transition-all duration-300 flex items-center justify-center gap-2 transform hover:-translate-x-1 text-sm md:text-base lg:text-lg"
         >
           <i className="fa-solid fa-arrow-left"></i> Atrás
         </button>
         <button
           type="button"
           onClick={enviarDestino}
-          className="w-full sm:w-auto px-6 py-3 md:px-8 md:py-4 lg:px-10 lg:py-5 bg-blue-600 hover:bg-blue-500 text-white rounded-lg shadow-lg transition-all duration-300 flex items-center justify-center gap-2 transform hover:translate-x-1 text-sm md:text-base lg:text-lg"
+          className="w-full sm:w-auto px-6 py-3 md:px-8 md:py-4 lg:px-10 lg:py-5 bg-[#0c66e1] hover:bg-[#3a8bff] text-white rounded-lg shadow-lg transition-all duration-300 flex items-center justify-center gap-2 transform hover:translate-x-1 text-sm md:text-base lg:text-lg"
         >
           <i className="fa-solid fa-paper-plane"></i> Confirmar
         </button>

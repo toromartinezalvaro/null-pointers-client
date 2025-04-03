@@ -2,14 +2,18 @@ import { NavLink } from "@remix-run/react";
 
 const ReportsAsideMenu = () => {
   return (
-    <aside className="sidebar">
-      <h2>Reports</h2>
+    <aside className="w-[15%] min-w-[180px] bg-[#282c34] text-white p-5 fixed h-full">
+      <h2 className="text-xl font-bold">Reports</h2>
       <nav>
-        <ul className="reports-menu">
+        <ul className="mt-8 space-y-2.5">
           <li>
             <NavLink
               to="destinations"
-              className={({ isActive }) => (isActive ? "active" : "")}
+              className={({ isActive }) => 
+                isActive 
+                  ? "block p-2.5 rounded bg-[#61dafb] text-black"
+                  : "block p-2.5 rounded hover:bg-gray-700"
+              }
             >
               Destinos
             </NavLink>
@@ -17,7 +21,11 @@ const ReportsAsideMenu = () => {
           <li>
             <NavLink
               to="users"
-              className={({ isActive }) => (isActive ? "active" : "")}
+              className={({ isActive }) => 
+                isActive 
+                  ? "block p-2.5 rounded bg-[#61dafb] text-black"
+                  : "block p-2.5 rounded hover:bg-gray-700"
+              }
             >
               Usuarios
             </NavLink>
@@ -25,7 +33,11 @@ const ReportsAsideMenu = () => {
           <li>
             <NavLink
               to="preferences"
-              className={({ isActive }) => (isActive ? "active" : "")}
+              className={({ isActive }) => 
+                isActive 
+                  ? "block p-2.5 rounded bg-[#61dafb] text-black"
+                  : "block p-2.5 rounded hover:bg-gray-700"
+              }
             >
               Preferencias
             </NavLink>
@@ -33,7 +45,11 @@ const ReportsAsideMenu = () => {
           <li>
             <NavLink
               to="statistics"
-              className={({ isActive }) => (isActive ? "active" : "")}
+              className={({ isActive }) => 
+                isActive 
+                  ? "block p-2.5 rounded bg-[#61dafb] text-black"
+                  : "block p-2.5 rounded hover:bg-gray-700"
+              }
             >
               Estadísticas
             </NavLink>

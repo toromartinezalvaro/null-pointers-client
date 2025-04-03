@@ -1,14 +1,8 @@
 import { Outlet, useNavigate } from "@remix-run/react";
-import type { LinksFunction } from "@remix-run/node";
-import reportsStylesHref from "~/styles/reports.css?url";
 import ReportsAsideMenu from "~/components/ReportsAsideMenu";
 
 /* Lógica para proteger vistas */
 import { useAuth } from "~/hooks/useAuth";
-
-export const links: LinksFunction = () => [
-  { rel: "stylesheet", href: reportsStylesHref },
-];
 
 export default function ReportsLayout() {
   const navigate = useNavigate();
@@ -19,10 +13,10 @@ export default function ReportsLayout() {
     navigate("/login");
   }
   return (
-    <div className="reports-container">
+    <div className="flex h-screen">
       <ReportsAsideMenu />
 
-      <main className="content">
+      <main className="flex-1 p-5 pl-[calc(15%+20px)]">
         <Outlet />
       </main>
     </div>

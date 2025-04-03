@@ -1,14 +1,11 @@
 import React from "react";
 import { useNavigate } from "@remix-run/react";
-import { validateForm } from "~/utils/validations";
 import { LoginFormValues } from "~/interfaces/loginForm";
 import "~/styles/login.css";
 import { authenticate } from "~/services/auth";
-import { useCheckbox } from "~/hooks/useCheckbox";
 
 export default function Login() {
   const navigate = useNavigate();
-  const { checked: aceptado, handleChange: manejarCambio } = useCheckbox(false);
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -17,12 +14,10 @@ export default function Login() {
     const data: LoginFormValues = {
       email: formData.get("email") as string,
       password: formData.get("password") as string,
-      aceptado,
     };
 
-    const error = validateForm(data.email, data.password, data.aceptado);
-    if (error) {
-      alert(error);
+    if (!data.email || !data.password) {
+      alert("Todos los campos son obligatorios");
       return;
     }
 
@@ -41,6 +36,9 @@ export default function Login() {
         document.cookie = "token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
         document.cookie = `token=${user.token}; path=/; SameSite=Strict;`;
         console.log("Current cookies:", document.cookie);
+
+        // Dispatch custom event to notify userAuth changes
+        window.dispatchEvent(new Event("userAuthChange"));
 
         if (user.userType === "ADMIN") {
           navigate("/reports/destinations");
@@ -78,27 +76,10 @@ export default function Login() {
           autoComplete="current-password"
           className="input"
         />
-        <label id="terms">
-          <input
-            type="checkbox"
-            id="checkboxTerms"
-            onChange={manejarCambio}
-            checked={aceptado}
-          />
-          {` Acepto los `}
-          <a
-            href="https://amadeus.com/es/politicas/privacy-policy"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <strong>términos y condiciones.</strong>
-          </a>
-        </label>
         <button
           type="submit"
           className="sessionButton"
           id="button"
-          disabled={!aceptado}
         >
           Iniciar Sesión
         </button>

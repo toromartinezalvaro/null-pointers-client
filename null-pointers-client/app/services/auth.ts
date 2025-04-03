@@ -26,3 +26,14 @@ export const authenticate = async (
     return null;
   }
 };
+
+export const logout = (): void => {
+  // Remove session data
+  sessionStorage.removeItem("userAuthData");
+  
+  // Clear token cookie
+  document.cookie = "token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+  
+  // Dispatch event to notify changes
+  window.dispatchEvent(new Event("userAuthChange"));
+};

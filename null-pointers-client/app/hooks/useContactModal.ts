@@ -29,6 +29,8 @@ export function useContactModal(isOpen: boolean, user: User | null) {
   const [destinosDelUsuario, setDestinosDelUsuario] = useState<Destination[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [previewMode, setPreviewMode] = useState(false);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const [successMessage, setSuccessMessage] = useState<string | null>(null);
 
   // Configuración inicial de EmailJS
   useEffect(() => {
@@ -78,7 +80,8 @@ export function useContactModal(isOpen: boolean, user: User | null) {
       }
     } catch (error) {
       console.error("Error al cargar destinos:", error);
-      alert("Error al cargar los destinos. Revisa la consola para más detalles.");
+      setErrorMessage("Error al cargar los destinos. Revisa la consola para más detalles.");
+      setTimeout(() => setErrorMessage(null), 3000);
       setDestinosDelUsuario([]);
     } finally {
       setIsLoading(false);
@@ -433,7 +436,8 @@ export function useContactModal(isOpen: boolean, user: User | null) {
         
         // Simulamos un retardo para imitar el envío
         await new Promise(resolve => setTimeout(resolve, 1000));
-        alert('MODO DESARROLLO: El email se ha procesado correctamente (no se ha enviado realmente)');
+        setSuccessMessage('MODO DESARROLLO: El email se ha procesado correctamente (no se ha enviado realmente)');
+        setTimeout(() => setSuccessMessage(null), 3000);
         return true;
       }
       
@@ -454,11 +458,13 @@ export function useContactModal(isOpen: boolean, user: User | null) {
       );
       
       console.log('Email enviado con éxito!', response);
-      alert('Email enviado con éxito! El destinatario lo recibirá en breve.');
+      setSuccessMessage('Email enviado con éxito! El destinatario lo recibirá en breve.');
+      setTimeout(() => setSuccessMessage(null), 3000);
       return true;
     } catch (error) {
       console.error("Error al enviar el email:", error);
-      alert(`Error al enviar el email: ${error instanceof Error ? error.message : 'Error desconocido'}`);
+      setErrorMessage(`Error al enviar el email: ${error instanceof Error ? error.message : 'Error desconocido'}`);
+      setTimeout(() => setErrorMessage(null), 3000);
       return false;
     }
   }, [user, emailSubject, emailContent, emailHtmlContent]);
@@ -473,6 +479,8 @@ export function useContactModal(isOpen: boolean, user: User | null) {
     isLoading,
     previewMode,
     setPreviewMode,
+    errorMessage,
+    successMessage,
     handleSendEmail
   };
 }

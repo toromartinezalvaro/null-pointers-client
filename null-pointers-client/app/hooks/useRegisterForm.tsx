@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 
 export const useRegisterForm = () => {
   const [mensajeExito, setMensajeExito] = useState(false); // Estado del mensaje de éxito
+  const [mensajeError, setMensajeError] = useState<string | null>(null); // Estado para el mensaje de error
   const [aceptado, setAceptado] = useState(false); // Estado del checkbox
   const navigate = useNavigate();
 
@@ -24,14 +25,16 @@ export const useRegisterForm = () => {
     const password = formData.get("password") as string;
 
     if (!email || !nombre || !password) {
-      alert("Todos los campos son obligatorios.");
+      setMensajeError("Todos los campos son obligatorios.");
+      setTimeout(() => setMensajeError(null), 3000);
       return;
     }
 
     const userType = formData.get("rol") as string;
 
     if (!userType) {
-      alert("El campo rol es obligatorio.");
+      setMensajeError("El campo rol es obligatorio.");
+      setTimeout(() => setMensajeError(null), 3000);
       return;
     }
 
@@ -51,13 +54,14 @@ export const useRegisterForm = () => {
       // Verifica el tipo de error usando `instanceof`
       if (error instanceof Error) {
         console.error("Error durante el registro:", error.message);
-        alert("Ocurrió un problema al registrar: " + error.message);
+        setMensajeError("Ocurrió un problema al registrar: " + error.message);
       } else {
         console.error("Error desconocido:", error);
-        alert("Ocurrió un problema desconocido al registrar.");
+        setMensajeError("Ocurrió un problema desconocido al registrar.");
       }
+      setTimeout(() => setMensajeError(null), 3000);
     }
   };
 
-  return { mensajeExito, aceptado, manejarCambio, manejarEnvio };
+  return { mensajeExito, mensajeError, aceptado, manejarCambio, manejarEnvio };
 };

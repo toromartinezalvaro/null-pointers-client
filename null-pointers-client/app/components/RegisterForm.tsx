@@ -6,6 +6,7 @@ import { UserRecord } from "~/interfaces/UserRecord";
 const RegisterForm: React.FC = () => {
   const [isCheckboxChecked, setIsCheckboxChecked] = useState(false);
   const [successMessage, setSuccessMessage] = useState(false); // Estado del mensaje de éxito
+  const [errorMessage, setErrorMessage] = useState<string | null>(null); // Estado para el mensaje de error
   const [selectedRole, setSelectedRole] = useState<string>(""); // Estado para el rol seleccionado
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
@@ -21,7 +22,8 @@ const RegisterForm: React.FC = () => {
 
     // Validación de campos requeridos
     if (!user.email || !user.nombre || !user.password || !user.userType) {
-      alert("Todos los campos son obligatorios.");
+      setErrorMessage("Todos los campos son obligatorios.");
+      setTimeout(() => setErrorMessage(null), 3000); // Ocultar después de 3 segundos
       return;
     }
 
@@ -38,7 +40,8 @@ const RegisterForm: React.FC = () => {
       }, 3000);
     } catch (error) {
       console.error("Error durante el registro:", error);
-      alert("Ocurrió un problema al registrar al usuario.");
+      setErrorMessage("El usuario ya existe");
+      setTimeout(() => setErrorMessage(null), 3000); // Ocultar después de 3 segundos
     }
   };
 
@@ -112,10 +115,17 @@ const RegisterForm: React.FC = () => {
         <button className="registerButton" id="button" type="submit" disabled={!isCheckboxChecked}>
           Registrarse
         </button>
+
+        <a href="/login">¿Ya tienes una cuenta? Inicia sesión</a>
       </form>
       {successMessage && (
         <div id="mensaje-exito">
           <p>¡Registro exitoso! Redirigiendo...</p>
+        </div>
+      )}
+      {errorMessage && (
+        <div id="mensaje-error" className="snackbar">
+          <p>{errorMessage}</p>
         </div>
       )}
     </div>

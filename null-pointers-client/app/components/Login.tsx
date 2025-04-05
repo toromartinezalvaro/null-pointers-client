@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { useNavigate } from "@remix-run/react";
 import { LoginFormValues } from "~/interfaces/loginForm";
 import "~/styles/login.css";
@@ -6,6 +6,7 @@ import { authenticate } from "~/services/auth";
 
 export default function Login() {
   const navigate = useNavigate();
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -17,7 +18,8 @@ export default function Login() {
     };
 
     if (!data.email || !data.password) {
-      alert("Todos los campos son obligatorios");
+      setErrorMessage("Todos los campos son obligatorios");
+      setTimeout(() => setErrorMessage(null), 3000);
       return;
     }
 
@@ -46,11 +48,13 @@ export default function Login() {
           navigate("/tarjetas");
         }
       } else {
-        alert("Usuario no existe");
+        setErrorMessage("Usuario no existe");
+        setTimeout(() => setErrorMessage(null), 3000);
       }
     } catch (error) {
       console.error("Error al autenticar:", error);
-      alert("Error en la solicitud.");
+      setErrorMessage("Error en la solicitud.");
+      setTimeout(() => setErrorMessage(null), 3000);
     }
   };
 
@@ -91,6 +95,11 @@ export default function Login() {
         </a>
         </div>
       </form>
+      {errorMessage && (
+        <div id="mensaje-error" className="snackbar">
+          <p>{errorMessage}</p>
+        </div>
+      )}
     </div>
   );
 }

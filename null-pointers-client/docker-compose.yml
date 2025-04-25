@@ -1,0 +1,6 @@
+services:
+  remix-app:
+    build: .
+    image: null-pointers-client
+    ports:
+      - "8080:3000"
